@@ -8,6 +8,6 @@ public interface ActorService {
     List<Actor> findAllActor();
     Actor findByName(String name);
     Actor createActor(Actor actor);
-    void updateActor(Long id, Actor actor);
+    Actor updateActor(Long id, Actor actor);
     void deleteActor(Long id);
 }

@@ -30,9 +30,9 @@ public class ActorServiceImpl implements ActorService {
     }
 
     @Override
-    public void updateActor(Long id, Actor actor) {
+    public Actor updateActor(Long id, Actor actor) {
         actorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not found any user"));
-        actorRepository.save(actor);
+        return actorRepository.save(actor);
     }
 
     @Override
