@@ -25,6 +25,8 @@ public class AppUser implements UserDetails {
     private String userName;
     private String email;
     private String password;
+    @OneToMany(mappedBy = "appUsers")
+    private List<Watchlist> watchlists;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_users",
             joinColumns = @JoinColumn(name = "user_id"),

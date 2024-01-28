@@ -1,5 +1,6 @@
 package com.example.vistreamv2.models.entity;
 
+import com.example.vistreamv2.models.enums.TypeGenre;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -8,7 +9,8 @@ import java.util.List;
 public class Genre {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private TypeGenre name;
     @ManyToMany
     @JoinTable(
             name = "media_genre",

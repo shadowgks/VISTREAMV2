@@ -9,8 +9,10 @@ public class Watchlist {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-//    @OneToOne
-//    private User user;
-    @ManyToMany
-    private List<Media> mediaItems;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private AppUser appUsers;
+    @ManyToOne
+    @JoinColumn(name = "media_id")
+    private Media media;
 }

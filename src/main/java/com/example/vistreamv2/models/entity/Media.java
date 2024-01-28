@@ -1,16 +1,22 @@
 package com.example.vistreamv2.models.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String name;
     @Temporal(TemporalType.TIME)
     private Date duration;
@@ -19,7 +25,6 @@ public class Media {
     private String director;
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
-    @Column(length = 5000)
     private String description;
     private String script;
     private String language;
@@ -35,5 +40,9 @@ public class Media {
     @OneToMany(mappedBy = "media")
     private List<Season> seasons;
     @OneToMany(mappedBy = "media")
+    private List<Watchlist> watchlists;
+    @OneToMany(mappedBy = "media")
     private List<ServerPlay> serverPlays;
+    @OneToOne
+    private Slider slider;
 }

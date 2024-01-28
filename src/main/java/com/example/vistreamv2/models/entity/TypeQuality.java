@@ -1,14 +1,23 @@
 package com.example.vistreamv2.models.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.vistreamv2.models.enums.TypeQualityMedia;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TypeQuality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private TypeQualityMedia name;
+    @OneToMany
+    private List<Media> mediaList;
 }
