@@ -18,6 +18,6 @@ public class TypeQuality {
     private Long id;
     @Enumerated(EnumType.STRING)
     private TypeQualityMedia name;
-    @OneToMany
+    @OneToMany(mappedBy = "typeQuality")
     private List<Media> mediaList;
 }

@@ -15,6 +15,6 @@ public class Country {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany
+    @OneToMany(mappedBy = "country")
     private List<Media> mediaList;
 }

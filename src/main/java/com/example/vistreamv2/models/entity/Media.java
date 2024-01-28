@@ -20,16 +20,17 @@ public class Media {
     private String name;
     @Temporal(TemporalType.TIME)
     private Date duration;
-    private String trailer;
-    private String linkImage;
+    private String picture;
+    private String linkTrailer;
+    private String linkImdb;
     private String director;
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
     private String description;
-    private String script;
-    private String language;
-    private boolean hasSubtitles;
-    private boolean isAvailable;
+    private String shortLink;
+    private String lang;
+    private boolean statusSerie;
+    private Integer levelView;
     private boolean isMovie;
     @ManyToOne
     @JoinColumn(name = "genre_id")
@@ -43,6 +44,8 @@ public class Media {
     private List<Watchlist> watchlists;
     @OneToMany(mappedBy = "media")
     private List<ServerPlay> serverPlays;
+    @ManyToOne
+    private TypeQuality typeQuality;
     @OneToOne
     private Slider slider;
 }

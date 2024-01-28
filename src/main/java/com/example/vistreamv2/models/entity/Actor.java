@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Actor {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
     private Date birthDate;

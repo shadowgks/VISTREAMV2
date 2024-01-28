@@ -2,12 +2,11 @@ package com.example.vistreamv2.models.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
 import java.util.List;
 
 public class Production {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @ManyToMany

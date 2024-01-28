@@ -20,6 +20,6 @@ public class Episode {
     @ManyToOne
     @JoinColumn(name = "season_id", referencedColumnName = "id")
     private Season season;
-    @OneToMany
-    private List<Episode> episodeList;
+    @OneToMany(mappedBy = "episode")
+    private List<ServerPlay> serverPlays;
 }
