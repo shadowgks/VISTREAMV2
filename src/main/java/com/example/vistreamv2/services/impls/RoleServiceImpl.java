@@ -14,27 +14,27 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     @Override
-    public List<Role> findAll() {
+    public List<Role> findAllRole() {
         return roleRepository.findAll();
     }
 
     @Override
-    public Role findByAssignments(Assignments assignments) {
+    public Role findByAssignmentsRole(Assignments assignments) {
         return roleRepository.findByAssignments(assignments);
     }
 
     @Override
-    public Role create(Role role) {
+    public Role createRole(Role role) {
         return roleRepository.save(role);
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteRole(Long id) {
 
     }
 
     @Override
-    public void update(Role role) {
+    public void updateRole(Role role) {
 
     }
 }

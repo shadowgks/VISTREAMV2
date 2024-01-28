@@ -19,12 +19,12 @@ public class AppUserServiceImpl implements AppUserService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public List<AppUser> findAll() {
+    public List<AppUser> findAllUser() {
         return appUserRepository.findAll();
     }
 
     @Override
-    public AppUser findByUsername(String username) {
+    public AppUser findByUsernameUser(String username) {
         return appUserRepository.findByUserName(username)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Any user by this: " + username));
     }
@@ -55,11 +55,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void update(AppUser user) {
+    public void updateUser(AppUser user) {
     }
 
     @Override
-    public void delete(Long username) {
+    public void deleteUser(Long username) {
 
     }
 }

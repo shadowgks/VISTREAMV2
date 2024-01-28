@@ -1,4 +1,4 @@
-package com.example.vistreamv2.mapper;
+package com.example.vistreamv2.mapper.user;
 
 import com.example.vistreamv2.dtos.requests.user.RegisterReqDto;
 import com.example.vistreamv2.models.entity.AppUser;

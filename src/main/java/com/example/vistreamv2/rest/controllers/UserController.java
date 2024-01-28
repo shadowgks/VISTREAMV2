@@ -4,8 +4,8 @@ import com.example.vistreamv2.config.JwtService;
 import com.example.vistreamv2.dtos.requests.user.AuthenticateReqDto;
 import com.example.vistreamv2.dtos.requests.user.RegisterReqDto;
 import com.example.vistreamv2.dtos.response.user.AuthenticateResDto;
-import com.example.vistreamv2.mapper.UserAuthenticateMapper;
-import com.example.vistreamv2.mapper.UserRegisterMapper;
+import com.example.vistreamv2.mapper.user.UserAuthenticateMapper;
+import com.example.vistreamv2.mapper.user.UserRegisterMapper;
 import com.example.vistreamv2.models.entity.AppUser;
 import com.example.vistreamv2.services.AppUserService;
 import jakarta.validation.Valid;
@@ -25,12 +25,12 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<AppUser>> findAllUser(){
-        List<AppUser> userList = userService.findAll();
+        List<AppUser> userList = userService.findAllUser();
         return ResponseEntity.ok(userList);
     }
     @GetMapping("/{username}")
     public ResponseEntity<AppUser> findUserByUsername(@Valid @PathVariable("username") String username){
-        AppUser user = userService.findByUsername(username);
+        AppUser user = userService.findByUsernameUser(username);
         return ResponseEntity.ok(user);
     }
     @PostMapping("/register")

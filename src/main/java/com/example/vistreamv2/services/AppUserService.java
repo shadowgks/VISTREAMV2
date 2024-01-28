@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppUserService {
-    List<AppUser> findAll();
-    AppUser findByUsername(String username);
+    List<AppUser> findAllUser();
+    AppUser findByUsernameUser(String username);
     AppUser register(AppUser user);
     AppUser authenticate(AppUser user);
-    void update(AppUser user);
-    void delete(Long username);
+    void updateUser(AppUser user);
+    void deleteUser(Long username);
 
 }

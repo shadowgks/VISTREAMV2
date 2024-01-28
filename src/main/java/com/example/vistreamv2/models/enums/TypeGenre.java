@@ -16,5 +16,8 @@ public enum TypeGenre {
     Horror,
     Musical,
     Mystery,
-    Romance
+    Romance,
+    War,
+    Sport,
+    Thriller
 }
