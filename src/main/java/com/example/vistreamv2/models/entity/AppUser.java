@@ -32,13 +32,13 @@ public class AppUser implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-    @Enumerated(EnumType.STRING)
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         if(roles != null){
-            roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getAssignments().name())));
+            roles.forEach(role -> grantedAuthorities
+                            .add(new SimpleGrantedAuthority(role.getAssignments().name())));
         }
         return grantedAuthorities;
     }
