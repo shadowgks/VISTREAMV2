@@ -1,20 +1,28 @@
 package com.example.vistreamv2.models.entity;
 
-import com.example.vistreamv2.models.enums.Assignments;
+import com.example.vistreamv2.models.enums.RoleType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Set;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Role {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private Assignments assignments;
+    private RoleType name;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "roles-permissions",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> permissions;
 }

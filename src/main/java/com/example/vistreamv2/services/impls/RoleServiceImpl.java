@@ -1,7 +1,6 @@
 package com.example.vistreamv2.services.impls;
 
 import com.example.vistreamv2.models.entity.Role;
-import com.example.vistreamv2.models.enums.Assignments;
 import com.example.vistreamv2.repositories.RoleRepository;
 import com.example.vistreamv2.services.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +18,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role findByAssignmentsRole(Assignments assignments) {
-        return roleRepository.findByAssignments(assignments);
-    }
-
-    @Override
     public Role createRole(Role role) {
         return roleRepository.save(role);
     }
@@ -32,7 +26,6 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRole(Long id) {
 
     }
-
     @Override
     public void updateRole(Role role) {
 

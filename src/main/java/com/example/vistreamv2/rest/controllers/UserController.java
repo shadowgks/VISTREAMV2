@@ -1,13 +1,18 @@
 package com.example.vistreamv2.rest.controllers;
 
 import com.example.vistreamv2.config.JwtService;
+import com.example.vistreamv2.dtos.requests.token.TokenReqDto;
 import com.example.vistreamv2.dtos.requests.user.AuthenticateReqDto;
 import com.example.vistreamv2.dtos.requests.user.RegisterReqDto;
+import com.example.vistreamv2.dtos.response.token.TokenResDTO;
 import com.example.vistreamv2.dtos.response.user.AuthenticateResDto;
+import com.example.vistreamv2.mapper.TokenMapper;
 import com.example.vistreamv2.mapper.user.UserAuthenticateMapper;
 import com.example.vistreamv2.mapper.user.UserRegisterMapper;
 import com.example.vistreamv2.models.entity.AppUser;
-import com.example.vistreamv2.services.AppUserService;
+import com.example.vistreamv2.models.entity.RefreshToken;
+import com.example.vistreamv2.services.RefreshTokenService;
+import com.example.vistreamv2.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +25,10 @@ import java.util.List;
 @RequestMapping("/v1.0.0/auth")
 @RequiredArgsConstructor
 public class UserController {
-    private final AppUserService userService;
+    private final UserService userService;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
+
 
     @GetMapping
     public ResponseEntity<List<AppUser>> findAllUser(){
@@ -37,14 +44,20 @@ public class UserController {
     public ResponseEntity<AuthenticateResDto> register(@Valid @RequestBody RegisterReqDto registerReqDto){
         AppUser user = userService.register(UserRegisterMapper.mapToEntity(registerReqDto));
         //generate new Token
-        String jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateAccessToken(user);
         return new ResponseEntity<>(UserAuthenticateMapper.mapToDto(user, jwtToken), HttpStatus.CREATED);
     }
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticateResDto> authenticate(@Valid @RequestBody AuthenticateReqDto authenticateReqDto){
         AppUser user = userService.authenticate(UserAuthenticateMapper.mapToEntity(authenticateReqDto));
         //generate new Token
-        String jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateAccessToken(user);
         return new ResponseEntity<>(UserAuthenticateMapper.mapToDto(user, jwtToken), HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<TokenResDTO> refreshToken(@RequestBody TokenReqDto request) {
+        RefreshToken refreshToken = refreshTokenService.generateNewToken(TokenMapper.toEntity(request));
+        return ResponseEntity.ok(TokenMapper.toDto(refreshToken));
     }
 }

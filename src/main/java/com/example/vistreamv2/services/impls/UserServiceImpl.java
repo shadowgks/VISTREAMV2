@@ -1,8 +1,8 @@
 package com.example.vistreamv2.services.impls;
 
 import com.example.vistreamv2.models.entity.AppUser;
-import com.example.vistreamv2.repositories.AppUserRepository;
-import com.example.vistreamv2.services.AppUserService;
+import com.example.vistreamv2.repositories.UserRepository;
+import com.example.vistreamv2.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,19 +13,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AppUserServiceImpl implements AppUserService {
-    private final AppUserRepository appUserRepository;
+public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public List<AppUser> findAllUser() {
-        return appUserRepository.findAll();
+        return userRepository.findAll();
     }
 
     @Override
     public AppUser findByUsernameUser(String username) {
-        return appUserRepository.findByUserName(username)
+        return userRepository.findByUserName(username)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Any user by this: " + username));
     }
 
@@ -38,20 +38,23 @@ public class AppUserServiceImpl implements AppUserService {
                 .lastName(req.getLastName())
                 .roles(req.getRoles())
                 .password(passwordEncoder.encode(req.getPassword()))
+                .isEnabled(true)
                 .build();
-        return appUserRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public AppUser authenticate(AppUser req) {
+        AppUser user = userRepository.findByEmailOrUserName(req.getEmail(), req.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Not Found Any User"));
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         req.getEmail(),
                         req.getPassword()
                 )
         );
-        return appUserRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Not Found Any user"));
+        return user;
     }
 
     @Override

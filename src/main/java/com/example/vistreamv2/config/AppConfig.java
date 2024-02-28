@@ -1,9 +1,7 @@
 package com.example.vistreamv2.config;
 
-import com.example.vistreamv2.repositories.AppUserRepository;
-import jakarta.security.auth.message.config.AuthConfig;
+import com.example.vistreamv2.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,11 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
-    private final AppUserRepository appUserRepository;
+    private final UserRepository userRepository;
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> appUserRepository.findByUserName(username)
+        return usernameOrEmail -> userRepository.findByEmailOrUserName(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() -> new IllegalArgumentException("Not found this user!"));
     }
     

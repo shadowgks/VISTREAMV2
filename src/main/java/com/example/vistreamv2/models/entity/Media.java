@@ -16,6 +16,8 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private Long idTmdb;
     @Column(nullable = false)
     private String name;
     @Temporal(TemporalType.TIME)

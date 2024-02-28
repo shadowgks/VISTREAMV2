@@ -19,20 +19,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-//    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
-//            "/v2/api-docs",
-//            "/v3/api-docs",
-//            "/v3/api-docs/**",
-//            "/swagger-resources",
-//            "/swagger-resources/**",
-//            "/configuration/ui",
-//            "/configuration/security",
-//            "/swagger-ui/**",
-//            "/webjars/**",
-//            "/swagger-ui.html"};
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-
 
     @Bean
     public SecurityFilterChain config(HttpSecurity http) throws Exception {
@@ -43,9 +31,7 @@ public class SecurityConfiguration {
                                 .permitAll().anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(
-                        jwtAuthFilter, UsernamePasswordAuthenticationFilter.class
-                );
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

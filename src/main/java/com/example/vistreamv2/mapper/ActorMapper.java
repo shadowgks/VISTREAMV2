@@ -1,4 +1,4 @@
-package com.example.vistreamv2.mapper.actor;
+package com.example.vistreamv2.mapper;
 
 import com.example.vistreamv2.dtos.requests.actor.ActorReqDto;
 import com.example.vistreamv2.dtos.response.actor.ActorResDto;

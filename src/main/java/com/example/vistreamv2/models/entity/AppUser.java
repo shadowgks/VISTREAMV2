@@ -1,16 +1,18 @@
 package com.example.vistreamv2.models.entity;
 
-import com.example.vistreamv2.models.enums.Assignments;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"userName", "email"})
+})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,25 +24,42 @@ public class AppUser implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String userName;
+    @Column(unique = true)
     private String email;
     private String password;
+    private LocalDateTime accessionDate;
+    private Boolean isEnabled;
+
     @OneToMany(mappedBy = "appUsers")
     private List<Watchlist> watchlists;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_users",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users-groups",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private Set<PermissionGroup> permissionGroups;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        if(roles != null){
-            roles.forEach(role -> grantedAuthorities
-                            .add(new SimpleGrantedAuthority(role.getAssignments().name())));
-        }
-        return grantedAuthorities;
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        roles.forEach(role -> role.getPermissions()
+                .forEach(permission -> authorities.add(new SimpleGrantedAuthority("PERMISSION_"+ permission.getSubject() + ":" +permission.getAction())))
+        );
+        permissionGroups.forEach(group -> group.getPermissions()
+                .forEach(permission -> authorities.add(new SimpleGrantedAuthority("PERMISSION_"+ permission.getSubject() + ":" +permission.getAction())))
+        );
+        System.out.println(authorities);
+        return authorities;
     }
 
     @Override
@@ -70,6 +89,6 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }

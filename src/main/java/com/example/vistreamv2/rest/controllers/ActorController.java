@@ -1,9 +1,8 @@
 package com.example.vistreamv2.rest.controllers;
 
-import com.example.vistreamv2.dtos.requests.actor.ActorMultipleReqDto;
 import com.example.vistreamv2.dtos.requests.actor.ActorReqDto;
 import com.example.vistreamv2.dtos.response.actor.ActorResDto;
-import com.example.vistreamv2.mapper.actor.ActorMapper;
+import com.example.vistreamv2.mapper.ActorMapper;
 import com.example.vistreamv2.models.entity.Actor;
 import com.example.vistreamv2.services.ActorService;
 import com.example.vistreamv2.utils.Response;
