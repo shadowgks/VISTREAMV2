@@ -22,46 +22,50 @@ public class ActorController {
 
     @GetMapping
     public ResponseEntity<Response<List<ActorResDto>>> getAllActor(){
-        Response<List<ActorResDto>> response = new Response<>();
         List<Actor> actorList = actorService.findAllActor();
-        response.setResult(actorList.stream()
-                .map(ActorMapper::mapToDto)
-                .toList());
-        response.setMessage("Done");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(Response.<List<ActorResDto>>builder()
+                .result(actorList.stream()
+                        .map(ActorMapper::mapToDto)
+                        .toList())
+                .message("Success")
+                .build(),
+                HttpStatus.OK);
     }
     @GetMapping("/{nameActor}")
-    public ResponseEntity<Response<ActorResDto>> getByName(@Valid
-                                                               @PathVariable("nameActor") String name){
-        Response<ActorResDto> response = new Response<>();
+    public ResponseEntity<Response<ActorResDto>> getByName(@Valid @PathVariable("nameActor") String name){
         Actor actor = actorService.findByName(name);
-        response.setResult(ActorMapper.mapToDto(actor));
-        response.setMessage("Founded");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(Response.<ActorResDto>builder()
+                .result(ActorMapper.mapToDto(actor))
+                .message("Success")
+                .build(),
+                HttpStatus.OK);
     }
     @PostMapping("/create")
     public ResponseEntity<Response<ActorResDto>> createActor(@Valid
                                                                  @RequestBody ActorReqDto reqDto){
-        Response<ActorResDto> response = new Response<>();
         Actor actors = actorService.createActor(ActorMapper.mapToEntity(reqDto));
-        response.setResult(ActorMapper.mapToDto(actors));
-        response.setMessage("Create Actor Successfully");
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(Response.<ActorResDto>builder()
+                .result(ActorMapper.mapToDto(actors))
+                .message("Create Actor Successfully")
+                .build(),
+                HttpStatus.CREATED);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<Response<ActorResDto>> updateActor(@Valid @PathVariable("id") Long id,
                                                                  @RequestBody ActorReqDto reqDto){
-        Response<ActorResDto> response = new Response<>();
         Actor actor = actorService.updateActor(id, ActorMapper.mapToEntity(reqDto));
-        response.setResult(ActorMapper.mapToDto(actor));
-        response.setMessage("Updated Actor Successfully");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(Response.<ActorResDto>builder()
+                .result(ActorMapper.mapToDto(actor))
+                .message("Updated Actor Successfully")
+                .build(),
+                HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response<ActorResDto>> deleteActor(@Valid @PathVariable("id") Long id){
-        Response<ActorResDto> response = new Response<>();
         actorService.deleteActor(id);
-        response.setMessage("Deleted Actor Successfully");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(Response.<ActorResDto>builder()
+                .message("Deleted Actor Successfully")
+                .build(),
+                HttpStatus.NO_CONTENT);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.vistreamv2.utils;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 @Getter
 @Setter
+@Builder
 public class Response<T>{
     private String message;
     private T result;

@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1709126009022-1" author="momos (generated)">
+    <changeSet id="1709126557973-1" author="momos (generated)">
         <createTable tableName="_group-permission">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk__group-permission"/>
@@ -16,7 +16,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-2" author="momos (generated)">
+    <changeSet id="1709126557973-2" author="momos (generated)">
         <createTable tableName="actor">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_actor"/>
@@ -25,7 +25,7 @@
             <column name="birth_date" type="DATE"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-3" author="momos (generated)">
+    <changeSet id="1709126557973-3" author="momos (generated)">
         <createTable tableName="country">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_country"/>
@@ -33,7 +33,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-4" author="momos (generated)">
+    <changeSet id="1709126557973-4" author="momos (generated)">
         <createTable tableName="episode">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_episode"/>
@@ -45,7 +45,7 @@
             <column name="season_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-5" author="momos (generated)">
+    <changeSet id="1709126557973-5" author="momos (generated)">
         <createTable tableName="genre">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_genre"/>
@@ -55,7 +55,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-6" author="momos (generated)">
+    <changeSet id="1709126557973-6" author="momos (generated)">
         <createTable tableName="groups_permissions">
             <column name="group_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_groups_permissions"/>
@@ -65,7 +65,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-7" author="momos (generated)">
+    <changeSet id="1709126557973-7" author="momos (generated)">
         <createTable tableName="media">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_media"/>
@@ -96,7 +96,7 @@
             <column name="slider_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-8" author="momos (generated)">
+    <changeSet id="1709126557973-8" author="momos (generated)">
         <createTable tableName="media_actor">
             <column name="actor_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -106,7 +106,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-9" author="momos (generated)">
+    <changeSet id="1709126557973-9" author="momos (generated)">
         <createTable tableName="media_genre">
             <column name="genre_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -116,7 +116,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-10" author="momos (generated)">
+    <changeSet id="1709126557973-10" author="momos (generated)">
         <createTable tableName="permission">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_permission"/>
@@ -125,7 +125,7 @@
             <column name="action" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-11" author="momos (generated)">
+    <changeSet id="1709126557973-11" author="momos (generated)">
         <createTable tableName="refresh_token">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_refreshtoken"/>
@@ -142,7 +142,7 @@
             <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-12" author="momos (generated)">
+    <changeSet id="1709126557973-12" author="momos (generated)">
         <createTable tableName="role">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_role"/>
@@ -150,7 +150,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-13" author="momos (generated)">
+    <changeSet id="1709126557973-13" author="momos (generated)">
         <createTable tableName="roles-permissions">
             <column name="permission_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_roles-permissions"/>
@@ -160,7 +160,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-14" author="momos (generated)">
+    <changeSet id="1709126557973-14" author="momos (generated)">
         <createTable tableName="roles_users">
             <column name="role_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_roles_users"/>
@@ -170,7 +170,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-15" author="momos (generated)">
+    <changeSet id="1709126557973-15" author="momos (generated)">
         <createTable tableName="season">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_season"/>
@@ -182,7 +182,7 @@
             <column name="media_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-16" author="momos (generated)">
+    <changeSet id="1709126557973-16" author="momos (generated)">
         <createTable tableName="server_play">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_serverplay"/>
@@ -192,7 +192,7 @@
             <column name="episode_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-17" author="momos (generated)">
+    <changeSet id="1709126557973-17" author="momos (generated)">
         <createTable tableName="slider">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_slider"/>
@@ -201,7 +201,7 @@
             <column name="media_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-18" author="momos (generated)">
+    <changeSet id="1709126557973-18" author="momos (generated)">
         <createTable tableName="type_quality">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_typequality"/>
@@ -209,7 +209,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-19" author="momos (generated)">
+    <changeSet id="1709126557973-19" author="momos (generated)">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
@@ -223,7 +223,7 @@
             <column name="is_enabled" type="BOOLEAN"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-20" author="momos (generated)">
+    <changeSet id="1709126557973-20" author="momos (generated)">
         <createTable tableName="users-groups">
             <column name="group_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users-groups"/>
@@ -233,7 +233,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-21" author="momos (generated)">
+    <changeSet id="1709126557973-21" author="momos (generated)">
         <createTable tableName="watchlist">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_watchlist"/>
@@ -242,140 +242,140 @@
             <column name="media_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1709126009022-22" author="momos (generated)">
+    <changeSet id="1709126557973-22" author="momos (generated)">
         <addUniqueConstraint columnNames="user_name, email" constraintName="uc_78e176efd9d102c0ef2a1212b"
                              tableName="users"/>
     </changeSet>
-    <changeSet id="1709126009022-23" author="momos (generated)">
+    <changeSet id="1709126557973-23" author="momos (generated)">
         <addUniqueConstraint columnNames="subject, action" constraintName="uc_87ab82e00c06bfce734a785b6"
                              tableName="permission"/>
     </changeSet>
-    <changeSet id="1709126009022-24" author="momos (generated)">
+    <changeSet id="1709126557973-24" author="momos (generated)">
         <addUniqueConstraint columnNames="name" constraintName="uc__group-permission_name"
                              tableName="_group-permission"/>
     </changeSet>
-    <changeSet id="1709126009022-25" author="momos (generated)">
+    <changeSet id="1709126557973-25" author="momos (generated)">
         <addUniqueConstraint columnNames="id_tmdb" constraintName="uc_media_idtmdb" tableName="media"/>
     </changeSet>
-    <changeSet id="1709126009022-26" author="momos (generated)">
+    <changeSet id="1709126557973-26" author="momos (generated)">
         <addUniqueConstraint columnNames="token" constraintName="uc_refreshtoken_token" tableName="refresh_token"/>
     </changeSet>
-    <changeSet id="1709126009022-27" author="momos (generated)">
+    <changeSet id="1709126557973-27" author="momos (generated)">
         <addUniqueConstraint columnNames="email" constraintName="uc_users_email" tableName="users"/>
     </changeSet>
-    <changeSet id="1709126009022-28" author="momos (generated)">
+    <changeSet id="1709126557973-28" author="momos (generated)">
         <addUniqueConstraint columnNames="user_name" constraintName="uc_users_username" tableName="users"/>
     </changeSet>
-    <changeSet id="1709126009022-29" author="momos (generated)">
+    <changeSet id="1709126557973-29" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="season_id" baseTableName="episode"
                                  constraintName="FK_EPISODE_ON_SEASON" referencedColumnNames="id"
                                  referencedTableName="season"/>
     </changeSet>
-    <changeSet id="1709126009022-30" author="momos (generated)">
+    <changeSet id="1709126557973-30" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="country_id" baseTableName="media" constraintName="FK_MEDIA_ON_COUNTRY"
                                  referencedColumnNames="id" referencedTableName="country"/>
     </changeSet>
-    <changeSet id="1709126009022-31" author="momos (generated)">
+    <changeSet id="1709126557973-31" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="genre_id" baseTableName="media" constraintName="FK_MEDIA_ON_GENRE"
                                  referencedColumnNames="id" referencedTableName="genre"/>
     </changeSet>
-    <changeSet id="1709126009022-32" author="momos (generated)">
+    <changeSet id="1709126557973-32" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="slider_id" baseTableName="media" constraintName="FK_MEDIA_ON_SLIDER"
                                  referencedColumnNames="id" referencedTableName="slider"/>
     </changeSet>
-    <changeSet id="1709126009022-33" author="momos (generated)">
+    <changeSet id="1709126557973-33" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="type_quality_id" baseTableName="media"
                                  constraintName="FK_MEDIA_ON_TYPEQUALITY" referencedColumnNames="id"
                                  referencedTableName="type_quality"/>
     </changeSet>
-    <changeSet id="1709126009022-34" author="momos (generated)">
+    <changeSet id="1709126557973-34" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="refresh_token"
                                  constraintName="FK_REFRESHTOKEN_ON_USER" referencedColumnNames="id"
                                  referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1709126009022-35" author="momos (generated)">
+    <changeSet id="1709126557973-35" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="media_id" baseTableName="season" constraintName="FK_SEASON_ON_MEDIA"
                                  referencedColumnNames="id" referencedTableName="media"/>
     </changeSet>
-    <changeSet id="1709126009022-36" author="momos (generated)">
+    <changeSet id="1709126557973-36" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="episode_id" baseTableName="server_play"
                                  constraintName="FK_SERVERPLAY_ON_EPISODE" referencedColumnNames="id"
                                  referencedTableName="episode"/>
     </changeSet>
-    <changeSet id="1709126009022-37" author="momos (generated)">
+    <changeSet id="1709126557973-37" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="media_id" baseTableName="server_play"
                                  constraintName="FK_SERVERPLAY_ON_MEDIA" referencedColumnNames="id"
                                  referencedTableName="media"/>
     </changeSet>
-    <changeSet id="1709126009022-38" author="momos (generated)">
+    <changeSet id="1709126557973-38" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="media_id" baseTableName="slider" constraintName="FK_SLIDER_ON_MEDIA"
                                  referencedColumnNames="id" referencedTableName="media"/>
     </changeSet>
-    <changeSet id="1709126009022-39" author="momos (generated)">
+    <changeSet id="1709126557973-39" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="media_id" baseTableName="watchlist"
                                  constraintName="FK_WATCHLIST_ON_MEDIA" referencedColumnNames="id"
                                  referencedTableName="media"/>
     </changeSet>
-    <changeSet id="1709126009022-40" author="momos (generated)">
+    <changeSet id="1709126557973-40" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="watchlist"
                                  constraintName="FK_WATCHLIST_ON_USER" referencedColumnNames="id"
                                  referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1709126009022-41" author="momos (generated)">
+    <changeSet id="1709126557973-41" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="groups_permissions"
                                  constraintName="fk_groper_on_permission" referencedColumnNames="id"
                                  referencedTableName="permission"/>
     </changeSet>
-    <changeSet id="1709126009022-42" author="momos (generated)">
+    <changeSet id="1709126557973-42" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="groups_permissions"
                                  constraintName="fk_groper_on_permission_group" referencedColumnNames="id"
                                  referencedTableName="_group-permission"/>
     </changeSet>
-    <changeSet id="1709126009022-43" author="momos (generated)">
+    <changeSet id="1709126557973-43" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="media_id" baseTableName="media_actor"
                                  constraintName="fk_medact_on_actor" referencedColumnNames="id"
                                  referencedTableName="actor"/>
     </changeSet>
-    <changeSet id="1709126009022-44" author="momos (generated)">
+    <changeSet id="1709126557973-44" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="actor_id" baseTableName="media_actor"
                                  constraintName="fk_medact_on_media" referencedColumnNames="id"
                                  referencedTableName="media"/>
     </changeSet>
-    <changeSet id="1709126009022-45" author="momos (generated)">
+    <changeSet id="1709126557973-45" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="media_id" baseTableName="media_genre"
                                  constraintName="fk_medgen_on_genre" referencedColumnNames="id"
                                  referencedTableName="genre"/>
     </changeSet>
-    <changeSet id="1709126009022-46" author="momos (generated)">
+    <changeSet id="1709126557973-46" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="genre_id" baseTableName="media_genre"
                                  constraintName="fk_medgen_on_media" referencedColumnNames="id"
                                  referencedTableName="media"/>
     </changeSet>
-    <changeSet id="1709126009022-47" author="momos (generated)">
+    <changeSet id="1709126557973-47" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="roles-permissions"
                                  constraintName="fk_rol_on_permission" referencedColumnNames="id"
                                  referencedTableName="permission"/>
     </changeSet>
-    <changeSet id="1709126009022-48" author="momos (generated)">
+    <changeSet id="1709126557973-48" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="roles-permissions"
                                  constraintName="fk_rol_on_role" referencedColumnNames="id" referencedTableName="role"/>
     </changeSet>
-    <changeSet id="1709126009022-49" author="momos (generated)">
+    <changeSet id="1709126557973-49" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="roles_users"
                                  constraintName="fk_roluse_on_app_user" referencedColumnNames="id"
                                  referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1709126009022-50" author="momos (generated)">
+    <changeSet id="1709126557973-50" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="roles_users"
                                  constraintName="fk_roluse_on_role" referencedColumnNames="id"
                                  referencedTableName="role"/>
     </changeSet>
-    <changeSet id="1709126009022-51" author="momos (generated)">
+    <changeSet id="1709126557973-51" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users-groups"
                                  constraintName="fk_use_on_app_user" referencedColumnNames="id"
                                  referencedTableName="users"/>
     </changeSet>
-    <changeSet id="1709126009022-52" author="momos (generated)">
+    <changeSet id="1709126557973-52" author="momos (generated)">
         <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="users-groups"
                                  constraintName="fk_use_on_permission_group" referencedColumnNames="id"
                                  referencedTableName="_group-permission"/>

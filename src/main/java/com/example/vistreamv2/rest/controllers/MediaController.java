@@ -1,0 +1,35 @@
+package com.example.vistreamv2.rest.controllers;
+
+import com.example.vistreamv2.models.entity.Media;
+import com.example.vistreamv2.services.MediaService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/v1.0.0/media")
+@RequiredArgsConstructor
+public class MediaController {
+    private final MediaService mediaService;
+
+    @GetMapping
+    public ResponseEntity<?> getAllMedia(@RequestParam Optional<String> searchTerm,
+                                         @RequestParam Optional<Integer> numPage,
+                                         @RequestParam Optional<Integer> numSize){
+        Map<String, Page<Media>> stringListMap = new HashMap<>();
+        Page<Media> mediaPage = mediaService.findAllMedia(
+                searchTerm.orElse(""),
+                numPage.orElse(0),
+                numSize.orElse(10));
+        stringListMap.put("page", mediaPage);
+        return ResponseEntity.ok(mediaPage);
+    }
+}

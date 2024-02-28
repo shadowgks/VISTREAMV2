@@ -13,20 +13,20 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Response<String>> handelIllegalArgumentException(Exception ex){
-        Response<String> response = new Response<>();
         String getErrorMessage = ex.getMessage();
-        response.setError(getErrorMessage);
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.badRequest().body(Response.<String>builder()
+                .error(getErrorMessage)
+                .build());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response<Map<String, String>>> handelMethodArgumentNotValidException(MethodArgumentNotValidException ev){
-        Response<Map<String, String>> response = new Response<>();
         Map<String, String> setFieldsValidation = new HashMap<>();
         ev.getBindingResult().getFieldErrors().forEach(
                 e -> setFieldsValidation.put(e.getField(), e.getDefaultMessage())
         );
-        response.setErrorsValidation(setFieldsValidation);
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.badRequest().body(Response.<Map<String, String>>builder()
+                .errorsValidation(setFieldsValidation)
+                .build());
     }
 }
