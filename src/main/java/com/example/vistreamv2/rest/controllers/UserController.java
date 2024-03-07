@@ -5,10 +5,8 @@ import com.example.vistreamv2.dtos.requests.token.TokenReqDto;
 import com.example.vistreamv2.dtos.requests.user.AuthenticateReqDto;
 import com.example.vistreamv2.dtos.requests.user.RegisterReqDto;
 import com.example.vistreamv2.dtos.response.token.TokenResDTO;
-import com.example.vistreamv2.dtos.response.user.AuthenticateResDto;
 import com.example.vistreamv2.mapper.TokenMapper;
-import com.example.vistreamv2.mapper.user.UserAuthenticateMapper;
-import com.example.vistreamv2.mapper.user.UserRegisterMapper;
+import com.example.vistreamv2.mapper.UserMapper;
 import com.example.vistreamv2.models.entity.AppUser;
 import com.example.vistreamv2.models.entity.RefreshToken;
 import com.example.vistreamv2.services.RefreshTokenService;
@@ -28,6 +26,9 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
+    private final TokenMapper tokenMapper;
+    private final UserMapper userMapper;
+
 
 
     @GetMapping
@@ -41,23 +42,28 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
     @PostMapping("/register")
-    public ResponseEntity<AuthenticateResDto> register(@Valid @RequestBody RegisterReqDto registerReqDto){
-        AppUser user = userService.register(UserRegisterMapper.mapToEntity(registerReqDto));
+    public ResponseEntity<TokenResDTO> register(@Valid @RequestBody RegisterReqDto registerReqDto){
+        AppUser user = userService.register(userMapper.mapToEntityRegister(registerReqDto));
         //generate new Token
-        String jwtToken = jwtService.generateAccessToken(user);
-        return new ResponseEntity<>(UserAuthenticateMapper.mapToDto(user, jwtToken), HttpStatus.CREATED);
+        String jwtAccessToken = jwtService.generateAccessToken(user);
+        RefreshToken jwtRefreshToken = refreshTokenService.createRefreshToken(user.getId());
+
+        return new ResponseEntity<>(tokenMapper.toDto(jwtAccessToken, jwtRefreshToken.getToken()), HttpStatus.CREATED);
     }
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticateResDto> authenticate(@Valid @RequestBody AuthenticateReqDto authenticateReqDto){
-        AppUser user = userService.authenticate(UserAuthenticateMapper.mapToEntity(authenticateReqDto));
+    public ResponseEntity<TokenResDTO> authenticate(@Valid @RequestBody AuthenticateReqDto authenticateReqDto){
+        AppUser user = userService.authenticate(userMapper.mapToEntityAuthenticated(authenticateReqDto));
         //generate new Token
-        String jwtToken = jwtService.generateAccessToken(user);
-        return new ResponseEntity<>(UserAuthenticateMapper.mapToDto(user, jwtToken), HttpStatus.OK);
+        String jwtAccessToken = jwtService.generateAccessToken(user);
+        RefreshToken jwtRefreshToken = refreshTokenService.createRefreshToken(user.getId());
+        return new ResponseEntity<>(tokenMapper.toDto(jwtAccessToken, jwtRefreshToken.getToken()) , HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<TokenResDTO> refreshToken(@RequestBody TokenReqDto request) {
-        RefreshToken refreshToken = refreshTokenService.generateNewToken(TokenMapper.toEntity(request));
-        return ResponseEntity.ok(TokenMapper.toDto(refreshToken));
+        RefreshToken accessToken = refreshTokenService.generateNewToken(TokenMapper.toEntity(request));
+        return ResponseEntity.ok(tokenMapper.toDto(accessToken.getToken(), request.refreshToken()));
     }
+//    @GetMapping
+//    public ResponseEntity<ToRDto>
 }

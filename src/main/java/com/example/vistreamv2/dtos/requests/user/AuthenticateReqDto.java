@@ -1,11 +1,25 @@
 package com.example.vistreamv2.dtos.requests.user;
 
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-public record AuthenticateReqDto(
+@Getter
+@Setter
+@Builder
+public class AuthenticateReqDto {
         @NotNull(message = "Email cannot be null")
-        String email,
+        @Email(message = "Email")
+        String email;
         @NotNull(message = "Password cannot be null")
-        String password
-) { }
+//        @Min(value = 8, message = "Sorry")
+        String password;
+}
+
+
+
+

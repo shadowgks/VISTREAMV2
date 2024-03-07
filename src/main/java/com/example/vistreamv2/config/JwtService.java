@@ -38,7 +38,6 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, Long expiration){
-        extraClaims.put("authorities", userDetails.getAuthorities()); // Assuming you have a method to get the user's role
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())

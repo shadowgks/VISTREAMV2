@@ -32,7 +32,7 @@ public class UserSeeder {
             AppUser user = AppUser.builder()
                     .firstName("saad")
                     .lastName("momo")
-                    .userName("saadmomo")
+                    .userNamee("saadmomo")
                     .email("saad@super.com")
                     .accessionDate(LocalDateTime.now())
                     .password(passwordEncoder.encode("12345678999"))

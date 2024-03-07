@@ -2,6 +2,7 @@ package com.example.vistreamv2.rest.controllers;
 
 import com.example.vistreamv2.models.entity.Media;
 import com.example.vistreamv2.services.MediaService;
+import com.example.vistreamv2.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +22,18 @@ public class MediaController {
     private final MediaService mediaService;
 
     @GetMapping
-    public ResponseEntity<?> getAllMedia(@RequestParam Optional<String> searchTerm,
-                                         @RequestParam Optional<Integer> numPage,
-                                         @RequestParam Optional<Integer> numSize){
+    public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
+                                                @RequestParam Optional<Integer> numPage,
+                                                @RequestParam Optional<Integer> numSize){
         Map<String, Page<Media>> stringListMap = new HashMap<>();
-        Page<Media> mediaPage = mediaService.findAllMedia(
+        Page<Media> mediaPage = mediaService.findAllMediaPageable(
                 searchTerm.orElse(""),
                 numPage.orElse(0),
                 numSize.orElse(10));
         stringListMap.put("page", mediaPage);
-        return ResponseEntity.ok(mediaPage);
+        return ResponseEntity.ok(Response.builder()
+                .message("Success")
+                .result(stringListMap)
+                .build());
     }
 }

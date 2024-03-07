@@ -25,7 +25,7 @@ public class AppUser implements UserDetails {
     private String firstName;
     private String lastName;
     @Column(unique = true)
-    private String userName;
+    private String userNamee;
     @Column(unique = true)
     private String email;
     private String password;

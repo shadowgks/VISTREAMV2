@@ -18,6 +18,7 @@ public class Actor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
+    private String picture;
     private LocalDate birthDate;
     @ManyToMany
     @JoinTable(

@@ -9,12 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("SELECT m FROM Media m " +
-            "WHERE m.director LIKE CONCAT('%', :searchTerm, '%') " +
-            "OR LOWER(m.name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+            "WHERE LOWER(m.director) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+            "OR LOWER(m.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+            "OR LOWER(m.originalTitle) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     Optional<Page<Media>> findMediaByContaining(@Param("searchTerm") String searchTerm, Pageable pageable);
+    Optional<Media> findMediaByOrOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
 }

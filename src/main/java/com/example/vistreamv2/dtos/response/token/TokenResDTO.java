@@ -1,9 +1,15 @@
 package com.example.vistreamv2.dtos.response.token;
 
-import lombok.Builder;
+import com.example.vistreamv2.models.entity.RefreshToken;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Builder
-public record TokenResDTO(
-        String accessToken,
-        String refreshToken
-){}
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class TokenResDTO {
+    String accessToken;
+    String refreshToken;
+}
