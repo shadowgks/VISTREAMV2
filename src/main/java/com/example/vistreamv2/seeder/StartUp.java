@@ -24,37 +24,9 @@ public class StartUp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        if(roleService.findAllRole().isEmpty()){
-//            roleService.createRole(new Role(null, Assignments.ADMIN));
-//            roleService.createRole(new Role(null, Assignments.USER));
-//            roleService.createRole(new Role(null, Assignments.SUPER_ADMIN));
-//        }
-//
-//        if(userService.findAllUser().isEmpty()){
-//            Set<Role> admin = new HashSet<>();
-//            admin.add(roleService.findByAssignmentsRole(Assignments.ADMIN));
-//            Set<Role> user = new HashSet<>();
-//            user.add(roleService.findByAssignmentsRole(Assignments.USER));
-//            Set<Role> superAdmin = new HashSet<>();
-//            superAdmin.add(roleService.findByAssignmentsRole(Assignments.SUPER_ADMIN));
-//
-////            userService.create(new AppUser(null, "saad", "moumou", "saadmomo4", "saad@gmail.com", "saad1234", admin));
-////            userService.create(new AppUser(null, "issam", "moumou", "issammomo4", "issam@gmail.com", "issam1234", superAdmin));
-////            userService.create(new AppUser(null, "bilal","moumou", "bilalmomo4", "bilal@gmail.com", "bilal1234", user));
-//        }
-//        if (genreService.findAllGenre().isEmpty()) {
-//            for (TypeGenre name : TypeGenre.values()){
-//                genreService.createGenre(new Genre(null, name));
-//            }
-//        }
-
         permissionSeeder.seed();
         roleSeeder.seed();
         groupPermissionSeeder.seed();
         userSeeder.seed();
-
-
-
-
     }
 }

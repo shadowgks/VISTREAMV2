@@ -17,9 +17,11 @@ public class Episode {
     private Long id;
     private int episodeNumber;
     private String picture;
+
     @ManyToOne
     @JoinColumn(name = "season_id", referencedColumnName = "id")
     private Season season;
+
     @OneToMany(mappedBy = "episode")
     private List<ServerPlay> serverPlays;
 }

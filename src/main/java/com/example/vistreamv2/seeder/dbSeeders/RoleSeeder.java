@@ -23,8 +23,6 @@ public class RoleSeeder {
     private final RoleRepository roleRepository;
     private final PermissionSeeder permissionSeeder;
 
-
-
     public void seed(){
         Set<Permission> permissionSet = permissionSeeder.permissionsCalled();
         if (roleRepository.findAll().isEmpty()){

@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -50,13 +51,16 @@ public class Media {
     private Country country;
 
     @OneToMany(mappedBy = "media")
-    private List<Season> seasons;
+    private Set<Season> seasons;
 
     @OneToMany(mappedBy = "media")
-    private List<Watchlist> watchlists;
+    private Set<Watchlist> watchlists;
 
     @OneToMany(mappedBy = "media")
-    private List<ServerPlay> serverPlays;
+    private Set<ServerPlay> serverPlays;
+
+    @OneToMany(mappedBy = "media")
+    private Set<Videos> videosList;
 
     @ManyToOne
     private TypeQuality typeQuality;
@@ -64,6 +68,5 @@ public class Media {
     @OneToOne
     private Slider slider;
 
-    @OneToMany
-    private List<Videos> videosList;
+
 }

@@ -1,6 +1,5 @@
 package com.example.vistreamv2.models.entity;
 
-import com.example.vistreamv2.models.enums.TypeGenre;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +16,6 @@ public class Genre {
     private Long id;
     @Column(unique = true)
     private Long idTmdb;
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private String name;
     @ManyToMany

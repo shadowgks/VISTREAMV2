@@ -1,9 +1,16 @@
 package com.example.vistreamv2.models.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Production {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
