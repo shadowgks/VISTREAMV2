@@ -1,9 +1,6 @@
 package com.example.vistreamv2.seeder;
 
-import com.example.vistreamv2.seeder.dbSeeders.GroupPermissionSeeder;
-import com.example.vistreamv2.seeder.dbSeeders.PermissionSeeder;
-import com.example.vistreamv2.seeder.dbSeeders.RoleSeeder;
-import com.example.vistreamv2.seeder.dbSeeders.UserSeeder;
+import com.example.vistreamv2.seeder.dbSeeders.*;
 import com.example.vistreamv2.services.UserService;
 import com.example.vistreamv2.services.GenreService;
 import com.example.vistreamv2.services.RoleService;
@@ -21,6 +18,7 @@ public class StartUp implements CommandLineRunner {
     private final RoleSeeder roleSeeder;
     private final PermissionSeeder permissionSeeder;
     private final GroupPermissionSeeder groupPermissionSeeder;
+    private final GenreSeeder genreSeeder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -28,5 +26,6 @@ public class StartUp implements CommandLineRunner {
         roleSeeder.seed();
         groupPermissionSeeder.seed();
         userSeeder.seed();
+        genreSeeder.fetchPopularGenre();
     }
 }
