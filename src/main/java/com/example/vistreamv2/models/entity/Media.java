@@ -63,4 +63,7 @@ public class Media {
 
     @OneToOne
     private Slider slider;
+
+    @OneToMany
+    private List<Videos> videosList;
 }
