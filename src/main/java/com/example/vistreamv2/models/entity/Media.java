@@ -29,16 +29,16 @@ public class Media {
     private String linkImdb;
     private String director;
     private LocalDate releaseDate;
-    private String description;
+    private String overview;
     private String shortLink;
     private String originalLanguage;
-    private boolean statusSerie;
+    private Boolean statusSerie;
     private Integer levelView;
     private Boolean adult;
     private Double popularity;
     private Double voteAverage;
     private Integer voteCount;
-    private boolean isMovie;
+    private Boolean isMovie;
 
 
     @ManyToOne

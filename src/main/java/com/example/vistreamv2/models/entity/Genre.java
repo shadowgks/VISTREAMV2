@@ -15,9 +15,11 @@ import java.util.List;
 public class Genre {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private Long idTmdb;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TypeGenre name;
+    private String name;
     @ManyToMany
     @JoinTable(
             name = "media_genre",
@@ -26,7 +28,7 @@ public class Genre {
     )
     private List<Media> mediaList;
 
-    public Genre(Long id, TypeGenre name){
+    public Genre(Long id, String name){
         this.id = id;
         this.name = name;
     }

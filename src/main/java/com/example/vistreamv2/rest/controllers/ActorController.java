@@ -83,7 +83,7 @@ public class ActorController {
                 .build(),
                 HttpStatus.OK);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Response<ActorResDto>> deleteActor(@Valid @PathVariable("id") Long id){
         actorService.deleteActor(id);
         return new ResponseEntity<>(Response.<ActorResDto>builder()
