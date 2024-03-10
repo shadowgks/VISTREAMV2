@@ -8,4 +8,5 @@ import java.util.Optional;
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     Optional<Genre> findGenreByName(String name);
+    Optional<Genre> findGenreByIdTmdb(Long id);
 }

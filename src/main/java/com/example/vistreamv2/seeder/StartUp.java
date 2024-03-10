@@ -26,6 +26,6 @@ public class StartUp implements CommandLineRunner {
         roleSeeder.seed();
         groupPermissionSeeder.seed();
         userSeeder.seed();
-        genreSeeder.fetchPopularGenre();
+        genreSeeder.fetchAndSaveGenre();
     }
 }
