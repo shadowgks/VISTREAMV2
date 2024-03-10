@@ -21,6 +21,7 @@ public class Media {
     @Column(unique = true)
     private Long idTmdb;
     @Column(nullable = false)
+    private String imdbId;
     private String title;
     private String originalTitle;
     private LocalDate duration;
@@ -29,6 +30,7 @@ public class Media {
     private String linkTrailer;
     private String linkImdb;
     private String director;
+    private String status;
     private LocalDate releaseDate;
     private String overview;
     private String shortLink;

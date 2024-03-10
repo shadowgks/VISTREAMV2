@@ -15,7 +15,12 @@ public class Production {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private Long idTmdb;
     private String name;
+    private String logoPath;
+    private String originCountry;
+
     @ManyToMany
     @JoinTable(
             name = "media_production",

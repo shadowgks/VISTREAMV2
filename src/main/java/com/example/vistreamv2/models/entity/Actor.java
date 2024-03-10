@@ -17,8 +17,17 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fullName;
+    @Column(unique = true)
+    private Long idTmdb;
+    @Column(unique = true)
+    private Long creditId;
+    private String name;
+    private String originalName;
+    private String character;
     private String picture;
+    private Integer gender;
+    private Double popularity;
+    private String profilePath;
     private LocalDate birthDate;
     @ManyToMany
     @JoinTable(

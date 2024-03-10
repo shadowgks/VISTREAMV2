@@ -20,6 +20,7 @@ public class StartUp implements CommandLineRunner {
     private final GroupPermissionSeeder groupPermissionSeeder;
     private final GenreSeeder genreSeeder;
     private final CountrySeeder countrySeeder;
+    private final MovieSeeder movieSeeder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -29,5 +30,6 @@ public class StartUp implements CommandLineRunner {
         userSeeder.seed();
         genreSeeder.fetchAndSaveGenre();
         countrySeeder.fetchAndSaveCountries();
+        movieSeeder.fetchIdTmdbMedia();
     }
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ActorRepository extends JpaRepository<Actor, Long> {
     @Query("SELECT m FROM Actor m " +
-            "WHERE LOWER(m.fullName) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+            "WHERE LOWER(m.name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     Optional<Page<Actor>> findActorByContaining(@Param("searchTerm") String searchTerm, Pageable pageable);
-    Optional<Actor> findByFullName(String name);
+    Optional<Actor> findByName(String name);
 }

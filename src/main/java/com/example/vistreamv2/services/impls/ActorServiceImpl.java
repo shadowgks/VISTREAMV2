@@ -30,7 +30,7 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public Actor findByName(String name) {
-        return actorRepository.findByFullName(name)
+        return actorRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("Not found any actor "+name));
     }
 
@@ -45,7 +45,7 @@ public class ActorServiceImpl implements ActorService {
                 new IllegalArgumentException("Not found this actor with this id: "+id));
         Actor actorEdit = Actor.builder()
                 .id(id)
-                .fullName(actor.getFullName())
+                .name(actor.getName())
                 .picture(actor.getPicture())
                 .birthDate(actor.getBirthDate())
                 .build();
