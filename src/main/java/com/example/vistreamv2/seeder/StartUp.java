@@ -19,6 +19,7 @@ public class StartUp implements CommandLineRunner {
     private final PermissionSeeder permissionSeeder;
     private final GroupPermissionSeeder groupPermissionSeeder;
     private final GenreSeeder genreSeeder;
+    private final CountrySeeder countrySeeder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -27,5 +28,6 @@ public class StartUp implements CommandLineRunner {
         groupPermissionSeeder.seed();
         userSeeder.seed();
         genreSeeder.fetchAndSaveGenre();
+        countrySeeder.fetchAndSaveCountries();
     }
 }

@@ -14,7 +14,10 @@ import java.util.List;
 public class Country {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    @Column(unique = true)
+    private String iso;
+    private String englishName;
+    private String nativeName;
 
     @OneToMany(mappedBy = "country")
     private List<Media> mediaList;

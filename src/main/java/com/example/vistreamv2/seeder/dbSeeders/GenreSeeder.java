@@ -13,7 +13,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,7 +23,6 @@ public class GenreSeeder {
     @Value("${spring.tmdb.api.link-v3}")
     private String TMDB_BASE_URL_V3;
     private final GenreRepository genreRepository;
-
     private final HttpClient httpClient;
 
     public GenreSeeder(GenreRepository genreRepository) {
@@ -40,7 +38,7 @@ public class GenreSeeder {
         }
     }
 
-    public List<Genre> requestHttpMethode(String  endPoint) throws IOException, InterruptedException {
+    public void requestHttpMethode(String  endPoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(TMDB_BASE_URL_V3 + endPoint + TMDB_API_KEY))
                 .build();
@@ -69,7 +67,7 @@ public class GenreSeeder {
             //store list genre
             genres.add(genre);
         }
-        return genreRepository.saveAll(genres);
+        genreRepository.saveAll(genres);
     }
 
 }
