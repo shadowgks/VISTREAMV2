@@ -28,7 +28,7 @@ public class Videos {
 
     @ManyToMany
     @JoinTable(
-            name = "media_videos",
+            name = "media_video",
             joinColumns = @JoinColumn(name = "media_id"),
             inverseJoinColumns = @JoinColumn(name = "video_id")
     )

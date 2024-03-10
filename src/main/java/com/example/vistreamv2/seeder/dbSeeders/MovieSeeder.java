@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -77,19 +78,24 @@ public class MovieSeeder {
     }
 
     public Set<Media> fetchMediaByIdTmdb(Long idTmdb) throws IOException, InterruptedException{
+        //for dates
+        // Inside your code
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+
+        //Get api
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(TMDB_BASE_URL_V3 + "/movie/"+idTmdb+"?append_to_response=videos&api_key=" + TMDB_API_KEY))
                 .build();
-
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+        //select object json
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(response.body());
         JsonNode genresNode = rootNode.get("genres");
         JsonNode productionNode = rootNode.get("production_companies");
         JsonNode countriesNode = rootNode.get("production_countries");
         JsonNode videosNode = rootNode.get("videos").get("results");
-        JsonNode spokenLanguagesNode = rootNode.get("spoken_languages");
+//        JsonNode spokenLanguagesNode = rootNode.get("spoken_languages");
 
         // Store data Genres
         Set<Genre> genres = new HashSet<>();
@@ -145,6 +151,10 @@ public class MovieSeeder {
             if(existingVideos.isPresent()){
                 continue;
             }
+            //Parse Date
+            LocalDateTime publishedAt = LocalDateTime.parse(item.get("published_at").asText(), formatter);
+
+            //Object new video
             Videos video = Videos.builder()
                     .idTmdb(item.get("id").asText())
                     .name(item.get("name").asText())
@@ -153,7 +163,7 @@ public class MovieSeeder {
                     ._size(item.get("size").asInt())
                     ._type(item.get("type").asText())
                     ._official(item.get("official").asText())
-                    ._publishedAt(LocalDateTime.parse(item.get("published_at").asText()))
+                    ._publishedAt(publishedAt)
                     .build();
             videos.add(video);
         }
@@ -186,6 +196,8 @@ public class MovieSeeder {
                     .build();
             genres.forEach(media::setGenre);
             countries.forEach(media::setCountry);
+            productions.forEach(media::setProduction);
+            videos.forEach(media::setVideo);
             //store list genre
             movies.add(media);
         }

@@ -24,10 +24,13 @@ public class StartUp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        //seed data manual
         permissionSeeder.seed();
         roleSeeder.seed();
         groupPermissionSeeder.seed();
         userSeeder.seed();
+
+        //seed data from api
         genreSeeder.fetchAndSaveGenre();
         countrySeeder.fetchAndSaveCountries();
         movieSeeder.fetchIdTmdbMedia();
