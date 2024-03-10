@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -14,7 +15,8 @@ import java.time.LocalDateTime;
 public class Videos {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long idTmdb;
+    @Column(unique = true)
+    private String idTmdb;
     private String name;
     private String _key;
     private String _site;

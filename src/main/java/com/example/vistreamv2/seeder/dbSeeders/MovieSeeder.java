@@ -12,8 +12,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class MovieSeeder {
@@ -43,7 +47,7 @@ public class MovieSeeder {
 
     public Set<Long> fetchIdTmdbMedia() throws IOException, InterruptedException{
         long countPage = 1;
-        long totalPages = 500;
+        long totalPages = 2;
 
         //for stock id movies
         Set<Long> idTmdbList = new HashSet<>();
@@ -89,8 +93,11 @@ public class MovieSeeder {
 
         // Store data Genres
         Set<Genre> genres = new HashSet<>();
-//        genreRepository.findGenreByIdTmdb(genresNode.get("id").asLong()).get();
         for (JsonNode item : genresNode) {
+            Optional<Genre> existingGenre = genreRepository.findGenreByIdTmdb(item.get("id").asLong());
+            if(existingGenre.isPresent()){
+                continue;
+            }
             Genre genre = Genre.builder()
                     .idTmdb(item.get("id").asLong())
                     .name(item.get("name").asText())
@@ -102,6 +109,10 @@ public class MovieSeeder {
         // Store data Productions
         Set<Production> productions = new HashSet<>();
         for (JsonNode item : productionNode) {
+            Optional<Production> existingProduction = productionRepository.findProductionByIdTmdb(item.get("id").asLong());
+            if(existingProduction.isPresent()){
+                continue;
+            }
             Production production = Production.builder()
                     .idTmdb(item.get("id").asLong())
                     .logoPath(item.get("logo_path").asText())
@@ -115,8 +126,12 @@ public class MovieSeeder {
         // Store data Countries
         Set<Country> countries = new HashSet<>();
         for (JsonNode item : countriesNode) {
+            Optional<Country> existingCountry = countryRepository.findCountriesByIso(item.get("iso_3166_1").asText());
+            if(existingCountry.isPresent()){
+                continue;
+            }
             Country country = Country.builder()
-                    .iso(item.get("iso").asText())
+                    .iso(item.get("iso_3166_1").asText())
                     .nativeName(item.get("name").asText())
                     .build();
             countries.add(country);
@@ -126,20 +141,49 @@ public class MovieSeeder {
         // Store data Videos
         Set<Videos> videos = new HashSet<>();
         for (JsonNode item : videosNode) {
+            Optional<Videos> existingVideos = videosRepository.findVideosByIdTmdb(item.get("id").asText());
+            if(existingVideos.isPresent()){
+                continue;
+            }
             Videos video = Videos.builder()
-                    .idTmdb(item.get("name").asLong())
+                    .idTmdb(item.get("id").asText())
+                    .name(item.get("name").asText())
+                    ._key(item.get("key").asText())
+                    ._site(item.get("site").asText())
+                    ._size(item.get("size").asInt())
+                    ._type(item.get("type").asText())
+                    ._official(item.get("official").asText())
+                    ._publishedAt(LocalDateTime.parse(item.get("published_at").asText()))
                     .build();
             videos.add(video);
         }
-        videosRepository.saveAll(countries);
-        System.out.println("d");
+        videosRepository.saveAll(videos);
+
+        //Store Media
         Set<Media> movies = new HashSet<>();
-        for (JsonNode movieNode : rootNode) {
+        for (JsonNode item : rootNode) {
             // Parse movie data and create Movie objects
             Media media = Media.builder()
                     .idTmdb(idTmdb)
+                    .idImdb(item.get("imdb_id").asText())
+                    .title(item.get("title").asText())
+                    .originalTitle(item.get("original_title").asText())
+                    .posterPath(item.get("poster_path").asText())
+                    .backDropPath(item.get("backdrop_path").asText())
+                    .linkTrailer("Trailer")
+                    .director("Director")
+                    .status(item.get("status").asText())
+                    .releaseDate(LocalDate.parse(item.get("release_date").asText()))
+                    .overview(item.get("overview").asText())
+                    .shortLink(UUID.randomUUID())
+                    .originalLanguage(item.get("spoken_languages").get("name").asText())
+                    .levelView(0)
+                    .adult(item.get("adult").asBoolean())
+                    .popularity(item.get("popularity").asDouble())
+                    .voteAverage(item.get("vote_average").asDouble())
+                    .voteCount(item.get("vote_count").asInt())
+                    .typeMedia(item.get("Movie").asText())
                     .build();
-
             //store list genre
             movies.add(media);
         }

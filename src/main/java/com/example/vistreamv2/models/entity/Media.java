@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -21,21 +22,20 @@ public class Media {
     @Column(unique = true)
     private Long idTmdb;
     @Column(nullable = false)
-    private String imdbId;
+    private String idImdb;
     private String title;
     private String originalTitle;
     private LocalDate duration;
     private String posterPath;
     private String backDropPath;
     private String linkTrailer;
-    private String linkImdb;
     private String director;
     private String status;
     private LocalDate releaseDate;
     private String overview;
-    private String shortLink;
+    private UUID shortLink;
     private String originalLanguage;
-    private Boolean statusSerie;
+//    private Boolean statusSerie;
     private Integer levelView;
     private Boolean adult;
     private Double popularity;
