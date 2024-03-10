@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,10 +27,9 @@ public class Season {
     private Integer episodeCount;
     private String overview;
 
-    @ManyToOne
-    @JoinColumn(name = "media_id")
-    private Media media;
+    @OneToMany(mappedBy = "season")
+    private List<Media> mediaList;
 
     @OneToMany(mappedBy = "season")
-    private List<Episode> episodes;
+    private Set<Episode> episodes;
 }

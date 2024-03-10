@@ -184,6 +184,8 @@ public class MovieSeeder {
                     .voteCount(item.get("vote_count").asInt())
                     .typeMedia(item.get("Movie").asText())
                     .build();
+            genres.forEach(media::setGenre);
+            countries.forEach(media::setCountry);
             //store list genre
             movies.add(media);
         }

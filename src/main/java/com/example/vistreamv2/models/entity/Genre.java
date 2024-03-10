@@ -18,6 +18,7 @@ public class Genre {
     private Long idTmdb;
     @Column(nullable = false)
     private String name;
+
     @ManyToMany
     @JoinTable(
             name = "media_genre",

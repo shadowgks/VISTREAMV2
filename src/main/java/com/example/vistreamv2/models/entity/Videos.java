@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +26,11 @@ public class Videos {
     private String _official;
     private LocalDateTime _publishedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
-    private Media media;
+    @ManyToMany
+    @JoinTable(
+            name = "media_videos",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "video_id")
+    )
+    private List<Media> mediaList;
 }

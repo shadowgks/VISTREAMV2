@@ -52,17 +52,23 @@ public class Media {
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @OneToMany(mappedBy = "media")
-    private Set<Season> seasons;
+    @ManyToOne
+    @JoinColumn(name = "production_id")
+    private Production production;
+
+    @ManyToOne
+    @JoinColumn(name = "videos_id")
+    private Videos video;
+
+    @ManyToOne
+    @JoinColumn(name = "season_id")
+    private Season season;
 
     @OneToMany(mappedBy = "media")
     private Set<Watchlist> watchlists;
 
     @OneToMany(mappedBy = "media")
     private Set<ServerPlay> serverPlays;
-
-    @OneToMany(mappedBy = "media")
-    private Set<Videos> videosList;
 
     @ManyToOne
     private TypeQuality typeQuality;
