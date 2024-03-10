@@ -2,9 +2,9 @@ package com.example.vistreamv2.seeder.dbSeeders;
 
 import com.example.vistreamv2.models.entity.Genre;
 import com.example.vistreamv2.repositories.GenreRepository;
-import com.example.vistreamv2.services.GenreService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,16 +19,16 @@ import java.util.Set;
 
 @Component
 public class GenreSeeder {
-    private final GenreService genreService;
+    @Value("${spring.tmdb.api.key}")
+    private String TMDB_API_KEY;
+    @Value("${spring.tmdb.api.link-v3}")
+    private String TMDB_BASE_URL_V3;
     private final GenreRepository genreRepository;
-    private static final String TMDB_API_KEY = "6012a2495a4fe600579a02c19b35cf28";
-    private static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
 
     private final HttpClient httpClient;
 
-    public GenreSeeder(GenreService genreService, GenreRepository genreRepository) {
+    public GenreSeeder(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
-        this.genreService = genreService;
         this.httpClient = HttpClient.newHttpClient();
     }
 
@@ -42,7 +42,7 @@ public class GenreSeeder {
 
     public List<Genre> requestHttpMethode(String  endPoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(TMDB_BASE_URL + endPoint + TMDB_API_KEY))
+                .uri(URI.create(TMDB_BASE_URL_V3 + endPoint + TMDB_API_KEY))
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());

@@ -28,3 +28,8 @@ spring:
   liquibase:
     enabled: false
     change-log: classpath:/db/changelog-master.xml
+
+  tmdb:
+    api:
+      key: "6012a2495a4fe600579a02c19b35cf28"
+      link-v3: "https://api.themoviedb.org/3"
