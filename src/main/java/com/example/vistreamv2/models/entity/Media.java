@@ -39,7 +39,7 @@ public class Media {
     private Double popularity;
     private Double voteAverage;
     private Integer voteCount;
-    private Boolean isMovie;
+    private String typeMedia;
 
 
     @ManyToOne
