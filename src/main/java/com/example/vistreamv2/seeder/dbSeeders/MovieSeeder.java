@@ -1,6 +1,7 @@
 package com.example.vistreamv2.seeder.dbSeeders;
 
 import com.example.vistreamv2.models.entity.*;
+import com.example.vistreamv2.models.entity.embedded.MediaCreditEmbedded;
 import com.example.vistreamv2.repositories.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,12 +33,18 @@ public class MovieSeeder {
     private final ProductionRepository productionRepository;
     private final HttpClient httpClient;
     private final VideosRepository videosRepository;
+    private final CreditRepository creditRepository;
+    private final MediaCreditRepository mediaCreditRepository;
 
     public MovieSeeder(MediaRepository mediaRepository,
                        ProductionRepository productionRepository,
                        CountryRepository countryRepository,
                        GenreRepository genreRepository,
-                       VideosRepository videosRepository) {
+                       VideosRepository videosRepository,
+                       CreditRepository creditRepository,
+                       MediaCreditRepository mediaCreditRepository) {
+        this.mediaCreditRepository = mediaCreditRepository;
+        this.creditRepository = creditRepository;
         this.productionRepository = productionRepository;
         this.genreRepository = genreRepository;
         this.countryRepository = countryRepository;
@@ -48,7 +55,7 @@ public class MovieSeeder {
 
     public void fetchIdTmdbMedia() throws IOException, InterruptedException{
         long countPage = 1;
-        long totalPages = 100;
+        long totalPages = 5;
         do {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(TMDB_BASE_URL_V3 + "/discover/movie?include_adult=true&include_video=true&page="+countPage+"&sort_by=popularity.desc&api_key=" + TMDB_API_KEY))
@@ -65,6 +72,7 @@ public class MovieSeeder {
                 Long idTmdb = item.get("id").asLong();
                 Optional<Media> existingMedia = mediaRepository.findMediaByIdTmdb(idTmdb);
                 if(existingMedia.isPresent()){
+                    saveCredits(existingMedia.get());
                     continue;
                 }
                 fetchMediaByIdTmdb(idTmdb);
@@ -72,6 +80,8 @@ public class MovieSeeder {
             System.out.println(countPage++);
         }while (countPage <= totalPages);
     }
+
+
 
     public void fetchMediaByIdTmdb(Long idTmdb) throws IOException, InterruptedException{
         // for dates
@@ -146,8 +156,8 @@ public class MovieSeeder {
         Set<Country> countriesCollect = new HashSet<>();
         Set<Country> countriesNew = new HashSet<>();
         for (JsonNode item : countriesNode) {
-            String countryIso = item.get("iso_3166_1").asText();
-            Optional<Country> existingCountry = countryRepository.findCountriesByIso(countryIso);
+            String countryIso = item.get("name").asText();
+            Optional<Country> existingCountry = countryRepository.findCountriesByNativeName(countryIso);
             Country country;
             if(existingCountry.isPresent()){
                 country = existingCountry.get();
@@ -173,7 +183,7 @@ public class MovieSeeder {
 //            LocalDateTime publishedAt = LocalDateTime.parse(item.get("published_at").asText(), formatter);
             //Object new video
             if(existingVideos.isPresent()){
-                continue;
+                video = existingVideos.get();
             }else{
                 video = Videos.builder()
                         .idTmdb(item.get("id").asText())
@@ -221,13 +231,60 @@ public class MovieSeeder {
                 .genres(genresCollect)
                 .productions(productionsCollect)
             .build();
-//            genresCollect.forEach(media::setGenre);
-//            countriesCollect.forEach(media::setCountry);
-//            productionsCollect.forEach(media::setProduction);
-//            videosCollect.forEach(media::setVideo);
-            //store list genre
-//            movies.add(media);
+
         mediaRepository.save(media);
+    }
+
+
+    public Set<Credit> saveCredits(Media mediaObj) throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(TMDB_BASE_URL_V3 + "/movie/"+mediaObj.getIdTmdb()+"/credits?api_key=" + TMDB_API_KEY))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(response.body());
+        JsonNode castsNode = rootNode.get("cast");
+
+        Set<Credit> genresNew = new HashSet<>();
+        Set<Credit> genresCollect = new HashSet<>();
+        for (JsonNode item : castsNode) {
+            Long idCredit = item.get("id").asLong();
+            Optional<Credit> existingCredit = creditRepository.findCreditByIdTmdb(idCredit);
+            Credit credit;
+            if(existingCredit.isPresent()){
+                credit = existingCredit.get();
+            }else{
+                //Store Credit
+                credit = Credit.builder()
+                        .idTmdb(idCredit)
+                        .adult(item.get("adult").asBoolean())
+                        .gender(item.get("gender").asInt())
+                        .name(item.get("original_name").asText())
+                        .popularity(item.get("popularity").asDouble())
+                        .profilePath(item.get("profile_path").asText())
+                        .build();
+                genresCollect.add(credit);
+            }
+            genresNew.add(credit);
+
+            // media and credit
+            MediaCredit mediaCredit = MediaCredit.builder()
+                    .id(MediaCreditEmbedded.builder()
+                            .idCredit(idCredit)
+                            .idMedia(mediaObj.getIdTmdb())
+                            .build())
+                    .media(mediaObj)
+                    .credit(existingCredit.get())
+                    .creditIdTmdb(item.get("credit_id").asText())
+                    .character(item.get("character").asText())
+                    .knownForDepartment(item.get("known_for_department").asText())
+                    .order(item.get("order").asInt())
+                    .build();
+            mediaCreditRepository.save(mediaCredit);
+        }
+        creditRepository.saveAll(genresNew);
+        return genresCollect;
     }
 
 

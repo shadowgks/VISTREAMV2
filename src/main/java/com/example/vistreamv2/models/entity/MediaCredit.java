@@ -10,16 +10,20 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "media_credit")
 public class MediaCredit {
     @EmbeddedId
     private MediaCreditEmbedded id;
     @ManyToOne
-    @MapsId("mediaId")
+    @MapsId("idMedia")
     @JoinColumn(name = "media_id")
     private Media media;
     @ManyToOne
-    @MapsId("creditgId")
+    @MapsId("idCredit")
     @JoinColumn(name = "credit_id")
     private Credit credit;
+    private String creditIdTmdb;
     private Integer order;
+    private String character;
+    private String knownForDepartment;
 }

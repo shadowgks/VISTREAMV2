@@ -1,9 +1,6 @@
 package com.example.vistreamv2.models.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -15,14 +12,11 @@ import lombok.*;
 public class Credit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private Long idTmdb;
     private Boolean adult;
     private Integer gender;
-    private String knownForDepartment;
     private String name;
-    private String originalName;
     private Double popularity;
     private String profilePath;
-    private Integer castId;
-    private String character;
-    private String creditId;
 }
