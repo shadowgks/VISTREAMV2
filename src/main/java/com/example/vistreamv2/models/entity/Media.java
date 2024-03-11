@@ -32,6 +32,7 @@ public class Media {
     private String director;
     private String status;
     private LocalDate releaseDate;
+    @Column(length = 10000)
     private String overview;
     private UUID shortLink;
     private String originalLanguage;
@@ -44,21 +45,37 @@ public class Media {
     private String typeMedia;
 
 
-    @ManyToOne
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "media-genres",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "media-countries",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "country_id")
+    )
+    private Set<Country> countries;
 
-    @ManyToOne
-    @JoinColumn(name = "production_id")
-    private Production production;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "media-productions",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "production_id")
+    )
+    private Set<Production> productions;
 
-    @ManyToOne
-    @JoinColumn(name = "videos_id")
-    private Videos video;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "media-videos",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "video_id")
+    )
+    private Set<Videos> videos;
 
     @ManyToOne
     @JoinColumn(name = "season_id")

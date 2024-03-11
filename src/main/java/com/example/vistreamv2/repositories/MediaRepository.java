@@ -20,4 +20,5 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
             "OR LOWER(m.originalTitle) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     Optional<Page<Media>> findMediaByContaining(@Param("searchTerm") String searchTerm, Pageable pageable);
     Optional<Media> findMediaByOrOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
+    Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

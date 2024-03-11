@@ -25,12 +25,4 @@ public class Videos {
     private String _type;
     private String _official;
     private LocalDateTime _publishedAt;
-
-    @ManyToMany
-    @JoinTable(
-            name = "media_video",
-            joinColumns = @JoinColumn(name = "media_id"),
-            inverseJoinColumns = @JoinColumn(name = "video_id")
-    )
-    private List<Media> mediaList;
 }

@@ -46,13 +46,9 @@ public class MovieSeeder {
         this.videosRepository = videosRepository;
     }
 
-    public Set<Long> fetchIdTmdbMedia() throws IOException, InterruptedException{
+    public void fetchIdTmdbMedia() throws IOException, InterruptedException{
         long countPage = 1;
-        long totalPages = 2;
-
-        //for stock id movies
-        Set<Long> idTmdbList = new HashSet<>();
-
+        long totalPages = 100;
         do {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(TMDB_BASE_URL_V3 + "/discover/movie?include_adult=true&include_video=true&page="+countPage+"&sort_by=popularity.desc&api_key=" + TMDB_API_KEY))
@@ -65,20 +61,20 @@ public class MovieSeeder {
             JsonNode totalPagesNode = rootNode.get("total_pages");
 
             //stock id movies
-            for (JsonNode idTmdbNode : resultsNode) {
-                fetchMediaByIdTmdb(idTmdbNode.get("id").asLong());
+            for (JsonNode item : resultsNode) {
+                Long idTmdb = item.get("id").asLong();
+                Optional<Media> existingMedia = mediaRepository.findMediaByIdTmdb(idTmdb);
+                if(existingMedia.isPresent()){
+                    continue;
+                }
+                fetchMediaByIdTmdb(idTmdb);
             }
-
-
             System.out.println(countPage++);
         }while (countPage <= totalPages);
-
-        System.out.println(idTmdbList);
-        return idTmdbList;
     }
 
-    public Set<Media> fetchMediaByIdTmdb(Long idTmdb) throws IOException, InterruptedException{
-        //for dates
+    public void fetchMediaByIdTmdb(Long idTmdb) throws IOException, InterruptedException{
+        // for dates
         // Inside your code
         DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 
@@ -95,114 +91,143 @@ public class MovieSeeder {
         JsonNode productionNode = rootNode.get("production_companies");
         JsonNode countriesNode = rootNode.get("production_countries");
         JsonNode videosNode = rootNode.get("videos").get("results");
-//        JsonNode spokenLanguagesNode = rootNode.get("spoken_languages");
+        JsonNode spokenLanguagesNode = rootNode.get("spoken_languages");
+
+
+        // Store language
+        String language = null;
+        for (JsonNode item : spokenLanguagesNode) {
+            language = item.get("name").asText();
+        }
 
         // Store data Genres
-        Set<Genre> genres = new HashSet<>();
+        Set<Genre> genresCollect = new HashSet<>();
+        Set<Genre> genresNew = new HashSet<>();
         for (JsonNode item : genresNode) {
-            Optional<Genre> existingGenre = genreRepository.findGenreByIdTmdb(item.get("id").asLong());
-            if(existingGenre.isPresent()){
-                continue;
+            Long genreId = item.get("id").asLong();
+            Optional<Genre> existingGenre = genreRepository.findGenreByIdTmdb(genreId);
+            Genre genre;
+            if (existingGenre.isPresent()) {
+                genre = existingGenre.get();
+            } else {
+                genre = Genre.builder()
+                        .idTmdb(genreId)
+                        .name(item.get("name").asText())
+                        .build();
+                genresNew.add(genre);
             }
-            Genre genre = Genre.builder()
-                    .idTmdb(item.get("id").asLong())
-                    .name(item.get("name").asText())
-                    .build();
-            genres.add(genre);
+            genresCollect.add(genre);
         }
-        genreRepository.saveAll(genres);
+        genreRepository.saveAll(genresNew);
 
         // Store data Productions
-        Set<Production> productions = new HashSet<>();
+        Set<Production> productionsCollect = new HashSet<>();
+        Set<Production> productionsNew = new HashSet<>();
         for (JsonNode item : productionNode) {
-            Optional<Production> existingProduction = productionRepository.findProductionByIdTmdb(item.get("id").asLong());
+            Long productionId = item.get("id").asLong();
+            Optional<Production> existingProduction = productionRepository.findProductionByIdTmdb(productionId);
+            Production production;
             if(existingProduction.isPresent()){
-                continue;
+                production = existingProduction.get();
+            }else{
+                production = Production.builder()
+                        .idTmdb(item.get("id").asLong())
+                        .logoPath(item.get("logo_path").asText())
+                        .originCountry(item.get("origin_country").asText())
+                        .name(item.get("name").asText())
+                        .build();
+                productionsNew.add(production);
             }
-            Production production = Production.builder()
-                    .idTmdb(item.get("id").asLong())
-                    .logoPath(item.get("logo_path").asText())
-                    .originCountry(item.get("origin_country").asText())
-                    .name(item.get("name").asText())
-                    .build();
-            productions.add(production);
+            productionsCollect.add(production);
         }
-        productionRepository.saveAll(productions);
+        productionRepository.saveAll(productionsNew);
 
         // Store data Countries
-        Set<Country> countries = new HashSet<>();
+        Set<Country> countriesCollect = new HashSet<>();
+        Set<Country> countriesNew = new HashSet<>();
         for (JsonNode item : countriesNode) {
-            Optional<Country> existingCountry = countryRepository.findCountriesByIso(item.get("iso_3166_1").asText());
+            String countryIso = item.get("iso_3166_1").asText();
+            Optional<Country> existingCountry = countryRepository.findCountriesByIso(countryIso);
+            Country country;
             if(existingCountry.isPresent()){
-                continue;
+                country = existingCountry.get();
+            }else{
+                country = Country.builder()
+                        .iso(item.get("iso_3166_1").asText())
+                        .nativeName(item.get("name").asText())
+                        .build();
+                countriesCollect.add(country);
             }
-            Country country = Country.builder()
-                    .iso(item.get("iso_3166_1").asText())
-                    .nativeName(item.get("name").asText())
-                    .build();
-            countries.add(country);
+            countriesNew.add(country);
         }
-        countryRepository.saveAll(countries);
+        countryRepository.saveAll(countriesNew);
 
         // Store data Videos
-        Set<Videos> videos = new HashSet<>();
+        Set<Videos> videosCollect = new HashSet<>();
+        Set<Videos> videosNew = new HashSet<>();
         for (JsonNode item : videosNode) {
-            Optional<Videos> existingVideos = videosRepository.findVideosByIdTmdb(item.get("id").asText());
+            String videoId = item.get("id").asText();
+            Optional<Videos> existingVideos = videosRepository.findVideosByIdTmdb(videoId);
+            Videos video;
+            //Parse Date
+//            LocalDateTime publishedAt = LocalDateTime.parse(item.get("published_at").asText(), formatter);
+            //Object new video
             if(existingVideos.isPresent()){
                 continue;
+            }else{
+                video = Videos.builder()
+                        .idTmdb(item.get("id").asText())
+                        .name(item.get("name").asText())
+                        ._key(item.get("key").asText())
+                        ._site(item.get("site").asText())
+                        ._size(item.get("size").asInt())
+                        ._type(item.get("type").asText())
+                        ._official(item.get("official").asText())
+                        ._publishedAt(LocalDateTime.now())
+                        .build();
+                videosCollect.add(video);
             }
-            //Parse Date
-            LocalDateTime publishedAt = LocalDateTime.parse(item.get("published_at").asText(), formatter);
-
-            //Object new video
-            Videos video = Videos.builder()
-                    .idTmdb(item.get("id").asText())
-                    .name(item.get("name").asText())
-                    ._key(item.get("key").asText())
-                    ._site(item.get("site").asText())
-                    ._size(item.get("size").asInt())
-                    ._type(item.get("type").asText())
-                    ._official(item.get("official").asText())
-                    ._publishedAt(publishedAt)
-                    .build();
-            videos.add(video);
+            videosNew.add(video);
         }
-        videosRepository.saveAll(videos);
+        videosRepository.saveAll(videosNew);
 
         //Store Media
-        Set<Media> movies = new HashSet<>();
-        for (JsonNode item : rootNode) {
-            // Parse movie data and create Movie objects
-            Media media = Media.builder()
-                    .idTmdb(idTmdb)
-                    .idImdb(item.get("imdb_id").asText())
-                    .title(item.get("title").asText())
-                    .originalTitle(item.get("original_title").asText())
-                    .posterPath(item.get("poster_path").asText())
-                    .backDropPath(item.get("backdrop_path").asText())
-                    .linkTrailer("Trailer")
-                    .director("Director")
-                    .status(item.get("status").asText())
-                    .releaseDate(LocalDate.parse(item.get("release_date").asText()))
-                    .overview(item.get("overview").asText())
-                    .shortLink(UUID.randomUUID())
-                    .originalLanguage(item.get("spoken_languages").get("name").asText())
-                    .levelView(0)
-                    .adult(item.get("adult").asBoolean())
-                    .popularity(item.get("popularity").asDouble())
-                    .voteAverage(item.get("vote_average").asDouble())
-                    .voteCount(item.get("vote_count").asInt())
-                    .typeMedia(item.get("Movie").asText())
-                    .build();
-            genres.forEach(media::setGenre);
-            countries.forEach(media::setCountry);
-            productions.forEach(media::setProduction);
-            videos.forEach(media::setVideo);
+//        Set<Media> movies = new HashSet<>();
+        // Parse movie data and create Movie objects
+        //Parse Date
+//        LocalDate releaseDate = LocalDate.parse(rootNode.get("release_date").asText(), formatter);
+        Media media = Media.builder()
+            .idTmdb(idTmdb)
+            .idImdb(rootNode.get("imdb_id").asText())
+            .title(rootNode.get("title").asText())
+            .originalTitle(rootNode.get("original_title").asText())
+            .posterPath(rootNode.get("poster_path").asText())
+            .backDropPath(rootNode.get("backdrop_path").asText())
+            .linkTrailer("Trailer")
+            .director("Director")
+            .status(rootNode.get("status").asText())
+            .releaseDate(LocalDate.now())
+            .overview(rootNode.get("overview").asText())
+            .shortLink(UUID.randomUUID())
+            .originalLanguage(language)
+            .levelView(0)
+            .adult(rootNode.get("adult").asBoolean())
+            .popularity(rootNode.get("popularity").asDouble())
+            .voteAverage(rootNode.get("vote_average").asDouble())
+            .voteCount(rootNode.get("vote_count").asInt())
+            .typeMedia("movie")
+                .videos(videosCollect)
+                .countries(countriesCollect)
+                .genres(genresCollect)
+                .productions(productionsCollect)
+            .build();
+//            genresCollect.forEach(media::setGenre);
+//            countriesCollect.forEach(media::setCountry);
+//            productionsCollect.forEach(media::setProduction);
+//            videosCollect.forEach(media::setVideo);
             //store list genre
-            movies.add(media);
-        }
-        mediaRepository.saveAll(movies);
-        return new HashSet<>();
+//            movies.add(media);
+        mediaRepository.save(media);
     }
 
 }

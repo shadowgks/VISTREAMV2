@@ -20,12 +20,4 @@ public class Production {
     private String name;
     private String logoPath;
     private String originCountry;
-
-    @ManyToMany
-    @JoinTable(
-            name = "media_production",
-            joinColumns = @JoinColumn(name = "media_id"),
-            inverseJoinColumns = @JoinColumn(name = "production_id")
-    )
-    private List<Media> mediaList;
 }

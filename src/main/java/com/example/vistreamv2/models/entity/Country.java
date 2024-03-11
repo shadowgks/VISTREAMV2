@@ -19,6 +19,5 @@ public class Country {
     private String englishName;
     private String nativeName;
 
-    @OneToMany(mappedBy = "country")
-    private List<Media> mediaList;
+
 }

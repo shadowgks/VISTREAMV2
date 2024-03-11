@@ -18,17 +18,4 @@ public class Genre {
     private Long idTmdb;
     @Column(nullable = false)
     private String name;
-
-    @ManyToMany
-    @JoinTable(
-            name = "media_genre",
-            joinColumns = @JoinColumn(name = "media_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    private List<Media> mediaList;
-
-    public Genre(Long id, String name){
-        this.id = id;
-        this.name = name;
-    }
 }
