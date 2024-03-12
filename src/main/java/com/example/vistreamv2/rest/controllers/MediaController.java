@@ -23,13 +23,15 @@ public class MediaController {
 
     @GetMapping
     public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
-                                                @RequestParam Optional<Integer> numPage,
-                                                @RequestParam Optional<Integer> numSize){
+                                                        @RequestParam Optional<Integer> numPage,
+                                                        @RequestParam Optional<Integer> numSize,
+                                                        @RequestParam Optional<String> typeMedia){
         Map<String, Page<Media>> stringListMap = new HashMap<>();
         Page<Media> mediaPage = mediaService.findAllMediaPageable(
                 searchTerm.orElse(""),
                 numPage.orElse(0),
-                numSize.orElse(10));
+                numSize.orElse(10),
+                typeMedia.orElse("movies"));
         stringListMap.put("page", mediaPage);
         return ResponseEntity.ok(Response.builder()
                 .message("Success")

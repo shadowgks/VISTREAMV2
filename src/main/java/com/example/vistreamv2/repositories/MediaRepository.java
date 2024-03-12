@@ -15,10 +15,13 @@ import java.util.Optional;
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("SELECT m FROM Media m " +
-            "WHERE LOWER(m.director) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+            "WHERE LOWER(m.originalTitle) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
+            "OR LOWER(m.originalLanguage) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
             "OR LOWER(m.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))" +
-            "OR LOWER(m.originalTitle) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
-    Optional<Page<Media>> findMediaByContaining(@Param("searchTerm") String searchTerm, Pageable pageable);
-    Optional<Media> findMediaByOrOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
+            "OR LOWER(m.typeMedia) LIKE LOWER(CONCAT('%', :typeMedia, '%'))")
+    Optional<Page<Media>> findMediaByContaining(@Param("searchTerm") String searchTerm,
+                                                Pageable pageable,
+                                                String typeMedia);
+    Optional<Media> findMediaByOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }
