@@ -16,10 +16,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class MovieSeeder {
@@ -53,7 +50,7 @@ public class MovieSeeder {
         this.videosRepository = videosRepository;
     }
 
-    public void fetchIdTmdbMedia() throws IOException, InterruptedException{
+    public void fetchMediaTmdb() throws IOException, InterruptedException{
         long countPage = 1;
         long totalPages = 5;
         do {
@@ -165,9 +162,9 @@ public class MovieSeeder {
                         .iso(item.get("iso_3166_1").asText())
                         .nativeName(item.get("name").asText())
                         .build();
-                countriesCollect.add(country);
+                countriesNew.add(country);
             }
-            countriesNew.add(country);
+                countriesCollect.add(country);
         }
         countryRepository.saveAll(countriesNew);
 
@@ -194,9 +191,9 @@ public class MovieSeeder {
                         ._official(item.get("official").asText())
                         ._publishedAt(LocalDateTime.now())
                         .build();
-                videosCollect.add(video);
+                videosNew.add(video);
             }
-            videosNew.add(video);
+            videosCollect.add(video);
         }
         videosRepository.saveAll(videosNew);
 
@@ -246,15 +243,14 @@ public class MovieSeeder {
         JsonNode rootNode = objectMapper.readTree(response.body());
         JsonNode castsNode = rootNode.get("cast");
 
-        Set<Credit> creditsNew = new HashSet<>();
-        Set<Credit> creditsCollect = new HashSet<>();
         for (JsonNode item : castsNode) {
             Long idCredit = item.get("id").asLong();
             Optional<Credit> existingCredit = creditRepository.findCreditByIdTmdb(idCredit);
             Credit credit;
+            Credit savedCredit;
             if(existingCredit.isPresent()){
-                credit = existingCredit.get();
-            }else{
+                savedCredit = existingCredit.get();
+            }else {
                 //Store Credit
                 credit = Credit.builder()
                         .idTmdb(idCredit)
@@ -264,13 +260,14 @@ public class MovieSeeder {
                         .popularity(item.get("popularity").asDouble())
                         .profilePath(item.get("profile_path").asText())
                         .build();
-                creditsCollect.add(credit);
-                Credit savedCredit = creditRepository.save(credit);
+                savedCredit = creditRepository.save(credit);
+            }
+
                 // save Media Credit
                 MediaCredit mediaCredit = MediaCredit.builder()
                         .id(MediaCreditEmbedded.builder()
-                                .idCredit(idCredit)
-                                .idMedia(idMediaTmdb)
+                                .idCredit(savedCredit.getId())
+                                .idMedia(media.getId())
                                 .build())
                         .media(media)
                         .credit(savedCredit)
@@ -280,11 +277,8 @@ public class MovieSeeder {
                         ._order(item.get("order").asInt())
                         .build();
                 mediaCreditRepository.save(mediaCredit);
-            }
-            creditsNew.add(credit);
-//            creditRepository.saveAll(creditsNew);
         }
-        return creditsCollect;
+        return null;
     }
 
 
