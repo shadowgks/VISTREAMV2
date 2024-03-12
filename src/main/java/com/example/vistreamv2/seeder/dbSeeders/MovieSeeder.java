@@ -80,10 +80,6 @@ public class MovieSeeder {
 
 
     public void fetchMediaByIdTmdb(Long idTmdb) throws IOException, InterruptedException{
-        // for dates
-        // Inside your code
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-
         //Get api
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(TMDB_BASE_URL_V3 + "/movie/"+idTmdb+"?append_to_response=videos&api_key=" + TMDB_API_KEY))
@@ -176,7 +172,7 @@ public class MovieSeeder {
             Optional<Videos> existingVideos = videosRepository.findVideosByIdTmdb(videoId);
             Videos video;
             //Parse Date
-//            LocalDateTime publishedAt = LocalDateTime.parse(item.get("published_at").asText(), formatter);
+            LocalDate publishedAt = LocalDate.parse(rootNode.get("published_at").asText());
             //Object new video
             if(existingVideos.isPresent()){
                 video = existingVideos.get();
@@ -197,11 +193,9 @@ public class MovieSeeder {
         }
         videosRepository.saveAll(videosNew);
 
-        //Store Media
-//        Set<Media> movies = new HashSet<>();
-        // Parse movie data and create Movie objects
-        //Parse Date
-//        LocalDate releaseDate = LocalDate.parse(rootNode.get("release_date").asText(), formatter);
+        // Store Media
+        // Parse Date
+        LocalDate releaseDate = LocalDate.parse(rootNode.get("release_date").asText());
         Media media = Media.builder()
             .idTmdb(idTmdb)
             .idImdb(rootNode.get("imdb_id").asText())
@@ -209,13 +203,12 @@ public class MovieSeeder {
             .originalTitle(rootNode.get("original_title").asText())
             .posterPath(rootNode.get("poster_path").asText())
             .backDropPath(rootNode.get("backdrop_path").asText())
-            .linkTrailer("Trailer")
-            .director("Director")
+            .director(rootNode.get("runtime").asText())
             .status(rootNode.get("status").asText())
-            .releaseDate(LocalDate.now())
+            .releaseDate(releaseDate)
             .overview(rootNode.get("overview").asText())
             .shortLink(UUID.randomUUID())
-            .originalLanguage(language)
+            .originalLanguage(rootNode.get("original_language").asText())
             .levelView(0)
             .adult(rootNode.get("adult").asBoolean())
             .popularity(rootNode.get("popularity").asDouble())
@@ -233,7 +226,7 @@ public class MovieSeeder {
     }
 
 
-    public Set<Credit> saveCredits(Long idMediaTmdb, Media media) throws IOException, InterruptedException{
+    public void saveCredits(Long idMediaTmdb, Media media) throws IOException, InterruptedException{
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(TMDB_BASE_URL_V3 + "/movie/"+idMediaTmdb+"/credits?api_key=" + TMDB_API_KEY))
                 .build();
@@ -278,7 +271,6 @@ public class MovieSeeder {
                         .build();
                 mediaCreditRepository.save(mediaCredit);
         }
-        return null;
     }
 
 

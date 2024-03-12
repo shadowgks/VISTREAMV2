@@ -28,7 +28,6 @@ public class Media {
     private LocalDate duration;
     private String posterPath;
     private String backDropPath;
-    private String linkTrailer;
     private String director;
     private String status;
     private LocalDate releaseDate;
@@ -36,7 +35,6 @@ public class Media {
     private String overview;
     private UUID shortLink;
     private String originalLanguage;
-//    private Boolean statusSerie;
     private Integer levelView;
     private Boolean adult;
     private Double popularity;
