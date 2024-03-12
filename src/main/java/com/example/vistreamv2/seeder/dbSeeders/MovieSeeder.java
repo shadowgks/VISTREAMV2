@@ -95,13 +95,6 @@ public class MovieSeeder {
         JsonNode videosNode = rootNode.get("videos").get("results");
         JsonNode spokenLanguagesNode = rootNode.get("spoken_languages");
 
-
-        // Store language
-        String language = null;
-        for (JsonNode item : spokenLanguagesNode) {
-            language = item.get("name").asText();
-        }
-
         // Store data Genres
         Set<Genre> genresCollect = new HashSet<>();
         Set<Genre> genresNew = new HashSet<>();
@@ -171,8 +164,8 @@ public class MovieSeeder {
             String videoId = item.get("id").asText();
             Optional<Videos> existingVideos = videosRepository.findVideosByIdTmdb(videoId);
             Videos video;
-            //Parse Date
-            LocalDate publishedAt = LocalDate.parse(rootNode.get("published_at").asText());
+            //Parse Date Time
+            LocalDateTime publishedAt = LocalDateTime.parse(item.get("published_at").asText(), DateTimeFormatter.ISO_DATE_TIME);
             //Object new video
             if(existingVideos.isPresent()){
                 video = existingVideos.get();
@@ -185,7 +178,7 @@ public class MovieSeeder {
                         ._size(item.get("size").asInt())
                         ._type(item.get("type").asText())
                         ._official(item.get("official").asText())
-                        ._publishedAt(LocalDateTime.now())
+                        ._publishedAt(publishedAt)
                         .build();
                 videosNew.add(video);
             }

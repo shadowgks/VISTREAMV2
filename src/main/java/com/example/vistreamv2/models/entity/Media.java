@@ -75,9 +75,8 @@ public class Media {
     )
     private Set<Videos> videos;
 
-    @ManyToOne
-    @JoinColumn(name = "season_id")
-    private Season season;
+    @OneToMany(mappedBy = "media")
+    private Set<Season> seasons;
 
     @OneToMany(mappedBy = "media")
     private Set<Watchlist> watchlists;
@@ -85,11 +84,9 @@ public class Media {
     @OneToMany(mappedBy = "media")
     private Set<ServerPlay> serverPlays;
 
+    @OneToMany(mappedBy = "media")
+    private List<Slider> sliders;
+
     @ManyToOne
     private TypeQuality typeQuality;
-
-    @OneToOne
-    private Slider slider;
-
-
 }

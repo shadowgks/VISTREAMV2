@@ -27,8 +27,9 @@ public class Season {
     private Integer episodeCount;
     private String overview;
 
-    @OneToMany(mappedBy = "season")
-    private List<Media> mediaList;
+    @ManyToOne
+    @JoinColumn(name = "media_id")
+    private Media media;
 
     @OneToMany(mappedBy = "season")
     private Set<Episode> episodes;
