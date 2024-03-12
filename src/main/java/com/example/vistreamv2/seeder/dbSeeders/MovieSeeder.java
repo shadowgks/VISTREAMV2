@@ -72,7 +72,6 @@ public class MovieSeeder {
                 Long idTmdb = item.get("id").asLong();
                 Optional<Media> existingMedia = mediaRepository.findMediaByIdTmdb(idTmdb);
                 if(existingMedia.isPresent()){
-                    saveCredits(existingMedia.get());
                     continue;
                 }
                 fetchMediaByIdTmdb(idTmdb);
@@ -156,8 +155,8 @@ public class MovieSeeder {
         Set<Country> countriesCollect = new HashSet<>();
         Set<Country> countriesNew = new HashSet<>();
         for (JsonNode item : countriesNode) {
-            String countryIso = item.get("name").asText();
-            Optional<Country> existingCountry = countryRepository.findCountriesByNativeName(countryIso);
+            String countryName = item.get("name").asText();
+            Optional<Country> existingCountry = countryRepository.findCountriesByNativeName(countryName);
             Country country;
             if(existingCountry.isPresent()){
                 country = existingCountry.get();
@@ -231,14 +230,15 @@ public class MovieSeeder {
                 .genres(genresCollect)
                 .productions(productionsCollect)
             .build();
+        Media mediaSaved = mediaRepository.save(media);
 
-        mediaRepository.save(media);
+        saveCredits(idTmdb, mediaSaved);
     }
 
 
-    public Set<Credit> saveCredits(Media mediaObj) throws IOException, InterruptedException{
+    public Set<Credit> saveCredits(Long idMediaTmdb, Media media) throws IOException, InterruptedException{
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(TMDB_BASE_URL_V3 + "/movie/"+mediaObj.getIdTmdb()+"/credits?api_key=" + TMDB_API_KEY))
+                .uri(URI.create(TMDB_BASE_URL_V3 + "/movie/"+idMediaTmdb+"/credits?api_key=" + TMDB_API_KEY))
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -246,8 +246,8 @@ public class MovieSeeder {
         JsonNode rootNode = objectMapper.readTree(response.body());
         JsonNode castsNode = rootNode.get("cast");
 
-        Set<Credit> genresNew = new HashSet<>();
-        Set<Credit> genresCollect = new HashSet<>();
+        Set<Credit> creditsNew = new HashSet<>();
+        Set<Credit> creditsCollect = new HashSet<>();
         for (JsonNode item : castsNode) {
             Long idCredit = item.get("id").asLong();
             Optional<Credit> existingCredit = creditRepository.findCreditByIdTmdb(idCredit);
@@ -264,27 +264,27 @@ public class MovieSeeder {
                         .popularity(item.get("popularity").asDouble())
                         .profilePath(item.get("profile_path").asText())
                         .build();
-                genresCollect.add(credit);
+                creditsCollect.add(credit);
+                Credit savedCredit = creditRepository.save(credit);
+                // save Media Credit
+                MediaCredit mediaCredit = MediaCredit.builder()
+                        .id(MediaCreditEmbedded.builder()
+                                .idCredit(idCredit)
+                                .idMedia(idMediaTmdb)
+                                .build())
+                        .media(media)
+                        .credit(savedCredit)
+                        ._creditIdTmdb(item.get("credit_id").asText())
+                        ._character(item.get("character").asText())
+                        ._knownForDepartment(item.get("known_for_department").asText())
+                        ._order(item.get("order").asInt())
+                        .build();
+                mediaCreditRepository.save(mediaCredit);
             }
-            genresNew.add(credit);
-
-            // media and credit
-            MediaCredit mediaCredit = MediaCredit.builder()
-                    .id(MediaCreditEmbedded.builder()
-                            .idCredit(idCredit)
-                            .idMedia(mediaObj.getIdTmdb())
-                            .build())
-                    .media(mediaObj)
-                    .credit(existingCredit.get())
-                    .creditIdTmdb(item.get("credit_id").asText())
-                    .character(item.get("character").asText())
-                    .knownForDepartment(item.get("known_for_department").asText())
-                    .order(item.get("order").asInt())
-                    .build();
-            mediaCreditRepository.save(mediaCredit);
+            creditsNew.add(credit);
+//            creditRepository.saveAll(creditsNew);
         }
-        creditRepository.saveAll(genresNew);
-        return genresCollect;
+        return creditsCollect;
     }
 
 

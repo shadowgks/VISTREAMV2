@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "media_credit")
+@Table(name = "media_credits")
 public class MediaCredit {
     @EmbeddedId
     private MediaCreditEmbedded id;
@@ -22,8 +22,9 @@ public class MediaCredit {
     @MapsId("idCredit")
     @JoinColumn(name = "credit_id")
     private Credit credit;
-    private String creditIdTmdb;
-    private Integer order;
-    private String character;
-    private String knownForDepartment;
+    private String _creditIdTmdb;
+    private Integer _order;
+    @Column(length = 1000)
+    private String _character;
+    private String _knownForDepartment;
 }
