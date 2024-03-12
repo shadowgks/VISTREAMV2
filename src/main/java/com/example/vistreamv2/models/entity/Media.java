@@ -25,10 +25,9 @@ public class Media {
     private String idImdb;
     private String title;
     private String originalTitle;
-    private LocalDate duration;
+    private Integer duration;
     private String posterPath;
     private String backDropPath;
-    private String director;
     private String status;
     private LocalDate releaseDate;
     @Column(length = 10000)

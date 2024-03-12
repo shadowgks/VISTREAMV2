@@ -15,8 +15,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
-    public Page<Media> findAllMediaPageable(String searchTerm, Integer numPage, Integer sizePage, String typeMedia) {
-        return mediaRepository.findMediaByContaining(searchTerm, PageRequest.of(numPage, sizePage), typeMedia)
+    public Page<Media> findAllMediaPageable(String typeMedia, String searchTerm, Integer numPage, Integer sizePage) {
+        return mediaRepository.findMediaByTypeMediaContaining(searchTerm, typeMedia, PageRequest.of(numPage, sizePage))
                 .orElseThrow(() -> new NotFoundMediaException("Not Found Any Media"));
     }
 
