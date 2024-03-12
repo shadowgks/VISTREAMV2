@@ -7,6 +7,7 @@ import com.example.vistreamv2.services.MediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,8 +16,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
-    public Page<Media> findAllMediaPageable(String typeMedia, String searchTerm, Integer numPage, Integer sizePage) {
-        return mediaRepository.findMediaByTypeMediaContaining(searchTerm, typeMedia, PageRequest.of(numPage, sizePage))
+    public Page<Media> findAllMediaPageable(String typeMedia, String searchTerm, Pageable pageable) {
+        return mediaRepository.findMediaByTypeMediaContaining(searchTerm, typeMedia, pageable)
                 .orElseThrow(() -> new NotFoundMediaException("Not Found Any Media"));
     }
 
