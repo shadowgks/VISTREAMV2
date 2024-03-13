@@ -5,6 +5,8 @@ import com.example.vistreamv2.models.entity.embedded.MediaCreditEmbedded;
 import com.example.vistreamv2.repositories.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -188,19 +190,22 @@ public class MovieSeeder {
 
         // Store Media
         // Parse Date
+        String title = rootNode.get("title").asText();
+        String titleOriginal = rootNode.get("original_title").asText();
         LocalDate releaseDate = LocalDate.parse(rootNode.get("release_date").asText());
+        String shortLink = title != null ? generateShortLink(title) : generateShortLink(titleOriginal);
         Media media = Media.builder()
                 .idTmdb(idTmdb)
                 .idImdb(rootNode.get("imdb_id").asText())
-                .title(rootNode.get("title").asText())
-                .originalTitle(rootNode.get("original_title").asText())
+                .title(title)
+                .shortLink(shortLink)
+                .originalTitle(titleOriginal)
                 .posterPath(rootNode.get("poster_path").asText())
                 .backDropPath(rootNode.get("backdrop_path").asText())
                 .status(rootNode.get("status").asText())
                 .releaseDate(releaseDate)
                 .duration(rootNode.get("runtime").asInt())
                 .overview(rootNode.get("overview").asText())
-                .shortLink(UUID.randomUUID())
                 .originalLanguage(rootNode.get("original_language").asText())
                 .levelView(0)
                 .adult(rootNode.get("adult").asBoolean())
@@ -266,6 +271,20 @@ public class MovieSeeder {
         }
     }
 
+    public String generateShortLink(String titleOrOriginal){
+        RandomStringGenerator generatorDIGITS8 = new RandomStringGenerator.Builder()
+                .withinRange('0', '9')
+                .filteredBy(CharacterPredicates.DIGITS)
+                .build();
+        RandomStringGenerator generatorDIGITS4 = new RandomStringGenerator.Builder()
+                .withinRange('0', '9')
+                .filteredBy(CharacterPredicates.DIGITS)
+                .build();
+        String randomString1 = generatorDIGITS8.generate(8); // Generate a random string of length 8
+        String randomString2 = generatorDIGITS4.generate(4); // Generate a random string of length 8
+
+        return titleOrOriginal.toLowerCase().replaceAll("[^a-z0-9]", "_") + "_" + randomString1 + "_" + randomString2;
+    }
 
 
 }

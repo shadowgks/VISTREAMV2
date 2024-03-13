@@ -2,6 +2,8 @@ package com.example.vistreamv2.models.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -32,7 +34,8 @@ public class Media {
     private LocalDate releaseDate;
     @Column(length = 10000)
     private String overview;
-    private UUID shortLink;
+    @Column(unique = true)
+    private String shortLink;
     private String originalLanguage;
     private Integer levelView;
     private Boolean adult;
@@ -88,4 +91,5 @@ public class Media {
 
     @ManyToOne
     private TypeQuality typeQuality;
+
 }
