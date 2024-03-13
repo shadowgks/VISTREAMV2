@@ -46,8 +46,7 @@ public class CountrySeeder {
             for (JsonNode genreNode : rootNode) {
                 // Parse movie data and create Movie objects
                 Country country = Country.builder()
-                        .englishName(genreNode.get("english_name").asText())
-                        .nativeName(genreNode.get("native_name").asText())
+                        .name(genreNode.get("native_name").asText())
                         .iso(genreNode.get("iso_3166_1").asText())
                         .build();
 

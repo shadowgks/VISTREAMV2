@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
-    Optional<Country> findCountriesByNativeName(String name);
+    Optional<Country> findCountriesByName(String name);
 
 }

@@ -144,14 +144,14 @@ public class MovieSeeder {
         Set<Country> countriesNew = new HashSet<>();
         for (JsonNode item : countriesNode) {
             String countryName = item.get("name").asText();
-            Optional<Country> existingCountry = countryRepository.findCountriesByNativeName(countryName);
+            Optional<Country> existingCountry = countryRepository.findCountriesByName(countryName);
             Country country;
             if(existingCountry.isPresent()){
                 country = existingCountry.get();
             }else{
                 country = Country.builder()
                         .iso(item.get("iso_3166_1").asText())
-                        .nativeName(item.get("name").asText())
+                        .name(item.get("name").asText())
                         .build();
                 countriesNew.add(country);
             }
