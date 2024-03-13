@@ -87,7 +87,7 @@ public class Media {
     private Set<ServerPlay> serverPlays;
 
     @OneToMany(mappedBy = "media")
-    private Set<MediaCredit> mediaCredits;
+    private Set<MediaCredit> credits;
 
     @OneToMany(mappedBy = "media")
     private Set<Slider> sliders;

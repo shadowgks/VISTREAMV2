@@ -22,11 +22,9 @@ public class MediaMapper {
     public DetailsMediaDto mapToDto(Media media){
         DetailsMediaDto dto = modelMapper.map(media, DetailsMediaDto.class);
         // Configure custom mapping for nested objects
-        dto.setGenres(media.getGenres().stream().map(genre -> modelMapper.map(genre, Genre.class))
+
+        dto.setCredits(media.getCredits().stream().map(credit -> modelMapper.map(credit, MediaCreditResDto.class))
                 .collect(Collectors.toSet()));
-        dto.setMediaCredits(media.getMediaCredits().stream().map(credit -> modelMapper.map(credit, MediaCreditResDto.class))
-                .collect(Collectors.toSet()));
-        // Map other nested objects in a similar manner
         return dto;
     }
 }

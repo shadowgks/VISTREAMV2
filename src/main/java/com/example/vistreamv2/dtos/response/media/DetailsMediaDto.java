@@ -1,6 +1,10 @@
 package com.example.vistreamv2.dtos.response.media;
 
+import com.example.vistreamv2.dtos.response.country.CountryResDto;
+import com.example.vistreamv2.dtos.response.genre.GenreResDto;
 import com.example.vistreamv2.dtos.response.media.credit.MediaCreditResDto;
+import com.example.vistreamv2.dtos.response.production.ProductionResDto;
+import com.example.vistreamv2.dtos.response.video.VideoResDto;
 import com.example.vistreamv2.models.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,13 +36,13 @@ public class DetailsMediaDto {
     private Integer voteCount;
     private String typeMedia;
     private TypeQuality typeQuality;
-    private Set<Genre> genres;
-    private Set<Country> countries;
-    private Set<Production> productions;
-    private Set<Videos> videos;
+    private Set<GenreResDto> genres;
+    private Set<CountryResDto> countries;
+    private Set<ProductionResDto> productions;
+    private Set<VideoResDto> videos;
+    private Set<MediaCreditResDto> credits;
     private Set<Season> seasons;
     private Set<Watchlist> watchlists;
     private Set<ServerPlay> serverPlays;
     private Set<Slider> sliders;
-    private Set<MediaCreditResDto> mediaCredits;
 }
