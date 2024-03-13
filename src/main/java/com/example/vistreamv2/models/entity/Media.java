@@ -87,7 +87,10 @@ public class Media {
     private Set<ServerPlay> serverPlays;
 
     @OneToMany(mappedBy = "media")
-    private List<Slider> sliders;
+    private Set<MediaCredit> mediaCredits;
+
+    @OneToMany(mappedBy = "media")
+    private Set<Slider> sliders;
 
     @ManyToOne
     private TypeQuality typeQuality;

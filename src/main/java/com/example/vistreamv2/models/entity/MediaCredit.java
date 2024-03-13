@@ -1,6 +1,7 @@
 package com.example.vistreamv2.models.entity;
 
 import com.example.vistreamv2.models.entity.embedded.MediaCreditEmbedded;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class MediaCredit {
     @ManyToOne
     @MapsId("idMedia")
     @JoinColumn(name = "media_id")
+    @JsonBackReference
     private Media media;
     @ManyToOne
     @MapsId("idCredit")

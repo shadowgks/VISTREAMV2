@@ -1,18 +1,19 @@
-package com.example.vistreamv2.dtos.response.movie;
+package com.example.vistreamv2.dtos.response.media;
 
-import com.example.vistreamv2.models.entity.TypeQuality;
-import jakarta.persistence.Column;
+import com.example.vistreamv2.dtos.response.media.credit.MediaCreditResDto;
+import com.example.vistreamv2.models.entity.*;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Set;
 
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieResDto {
+public class DetailsMediaDto {
     private Long idTmdb;
     private String idImdb;
     private String title;
@@ -31,4 +32,13 @@ public class MovieResDto {
     private Integer voteCount;
     private String typeMedia;
     private TypeQuality typeQuality;
+    private Set<Genre> genres;
+    private Set<Country> countries;
+    private Set<Production> productions;
+    private Set<Videos> videos;
+    private Set<Season> seasons;
+    private Set<Watchlist> watchlists;
+    private Set<ServerPlay> serverPlays;
+    private Set<Slider> sliders;
+    private Set<MediaCreditResDto> mediaCredits;
 }

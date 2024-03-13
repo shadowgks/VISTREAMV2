@@ -1,6 +1,8 @@
 package com.example.vistreamv2.rest.controllers;
 
+import com.example.vistreamv2.dtos.response.media.DetailsMediaDto;
 import com.example.vistreamv2.dtos.response.movie.MovieResDto;
+import com.example.vistreamv2.mapper.MediaMapper;
 import com.example.vistreamv2.mapper.MovieMapper;
 import com.example.vistreamv2.models.entity.Media;
 import com.example.vistreamv2.services.MediaService;
@@ -25,6 +27,7 @@ import java.util.Optional;
 public class MediaController {
     private final MediaService mediaService;
     private final MovieMapper movieMapper;
+    private final MediaMapper mediaMapper;
 
     @GetMapping
     public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
@@ -37,14 +40,12 @@ public class MediaController {
                 numPage.orElse(0),
                 numSize.orElse(10)
         );
-
         // initialize request default
         Page<Media> mediaPage = mediaService.findAllMediaPageable(
                 typeMedia.orElse(""),
                 searchTerm.orElse(""),
                 pageable
         );
-
         // Mapped data
         List<MovieResDto> movieResDtoList = mediaPage.stream()
                 .map(movieMapper::mapToDto)
@@ -52,7 +53,6 @@ public class MediaController {
 
         // Insert data in PageImpl class
         Page<MovieResDto> movieResDtoPage = new PageImpl<>(movieResDtoList, pageable, mediaPage.getTotalElements());
-
         // Set data pageble
         stringListMap.put("page", movieResDtoPage);
         return ResponseEntity.ok(Response.builder()
@@ -62,11 +62,11 @@ public class MediaController {
     }
 
     @GetMapping("/{shortLink}")
-    public ResponseEntity<Response<?>> findMediaByShortLink(@PathVariable String shortLink){
+    public ResponseEntity<Response<Object>> findMediaByShortLink(@PathVariable String shortLink){
         Media media = mediaService.findMediaByShortLink(shortLink);
         return ResponseEntity.ok(Response.builder()
                 .message("Success")
-                .result(media)
+                .result(mediaMapper.mapToDto(media))
                 .build());
     }
 }
