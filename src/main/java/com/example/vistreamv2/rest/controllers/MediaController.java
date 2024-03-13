@@ -26,7 +26,7 @@ public class MediaController {
     private final MediaService mediaService;
     private final MovieMapper movieMapper;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
                                                         @RequestParam Optional<String> typeMedia,
                                                         @RequestParam Optional<Integer> numPage,
@@ -58,6 +58,15 @@ public class MediaController {
         return ResponseEntity.ok(Response.builder()
                 .message("Success")
                 .result(stringListMap)
+                .build());
+    }
+
+    @GetMapping("/{shortLink}")
+    public ResponseEntity<Response<?>> findMediaByShortLink(@PathVariable String shortLink){
+        Media media = mediaService.findMediaByShortLink(shortLink);
+        return ResponseEntity.ok(Response.builder()
+                .message("Success")
+                .result(media)
                 .build());
     }
 }

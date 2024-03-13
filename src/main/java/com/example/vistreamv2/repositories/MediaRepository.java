@@ -24,5 +24,6 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
             @Param("typeMedia") String typeMedia,
             Pageable pageable);
     Optional<Media> findMediaByOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
+    Optional<Media> findMediaByShortLink(String shortLink);
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

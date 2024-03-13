@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public interface MediaService {
     Page<Media> findAllMediaPageable(String typeMedia, String searchTerm, Pageable pageable);
+    Media findMediaByShortLink(String shortLink);
+    Media findMediaByIdTmdb(Long idTmdb);
+
     Boolean checkMediaIsFounded(Media media);
     Media saveMedia(Media media);
     Media updateMedia(Long id, Media media);

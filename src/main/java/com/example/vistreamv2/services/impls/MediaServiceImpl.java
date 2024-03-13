@@ -18,8 +18,21 @@ public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
     public Page<Media> findAllMediaPageable(String typeMedia, String searchTerm, Pageable pageable) {
         return mediaRepository.findMediaByTypeMediaContaining(searchTerm, typeMedia, pageable)
-                .orElseThrow(() -> new NotFoundMediaException("Not Found Any Media"));
+                .orElseThrow(() -> new NotFoundMediaException("Not found any media"));
     }
+
+    @Override
+    public Media findMediaByShortLink(String shortLink) {
+        return mediaRepository.findMediaByShortLink(shortLink)
+                .orElseThrow(() -> new NotFoundMediaException("Not this media: "+shortLink));
+    }
+
+    @Override
+    public Media findMediaByIdTmdb(Long idTmdb) {
+        return mediaRepository.findMediaByIdTmdb(idTmdb)
+                .orElseThrow(() -> new NotFoundMediaException("Not this media: "+idTmdb));
+    }
+
 
     @Override
     public Boolean checkMediaIsFounded(Media media) {
