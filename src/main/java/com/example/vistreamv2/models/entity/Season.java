@@ -32,5 +32,8 @@ public class Season {
     private Media media;
 
     @OneToMany(mappedBy = "season")
+    private Set<MediaServerPlay> serverPlays;
+
+    @OneToMany(mappedBy = "season")
     private Set<Episode> episodes;
 }

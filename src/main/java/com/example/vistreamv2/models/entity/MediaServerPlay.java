@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "media_servers")
 public class MediaServerPlay {
     @EmbeddedId
     private MediaServerPlayEmbedded id;
@@ -23,6 +24,14 @@ public class MediaServerPlay {
     @MapsId("idServer")
     @JoinColumn(name = "server_id")
     private ServerPlay credit;
+    @ManyToOne
+    @MapsId("idSeason")
+    @JoinColumn(name = "season_id")
+    private Season season;
+    @ManyToOne
+    @MapsId("idEpisode")
+    @JoinColumn(name = "episode_id")
+    private Episode episode;
     @Column(length = 5000)
     private String mediaPath;
 }

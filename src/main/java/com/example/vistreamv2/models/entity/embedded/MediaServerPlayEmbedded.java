@@ -17,4 +17,8 @@ public class MediaServerPlayEmbedded implements Serializable {
     private Long idMedia;
     @Column(name = "server_id")
     private Long idServer;
+    @Column(name = "season_id")
+    private Long idSeason;
+    @Column(name = "episode_id")
+    private Long idEpisode;
 }

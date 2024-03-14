@@ -84,7 +84,7 @@ public class Media {
     private Set<Watchlist> watchlists;
 
     @OneToMany(mappedBy = "media")
-    private Set<ServerPlay> serverPlays;
+    private Set<MediaServerPlay> serverPlays;
 
     @OneToMany(mappedBy = "media")
     private Set<MediaCredit> credits;

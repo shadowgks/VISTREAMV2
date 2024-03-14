@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,5 +24,5 @@ public class Episode {
     private Season season;
 
     @OneToMany(mappedBy = "episode")
-    private List<ServerPlay> serverPlays;
+    private Set<MediaServerPlay> serverPlays;
 }
