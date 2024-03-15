@@ -1,13 +1,8 @@
 package com.example.vistreamv2.mapper;
 
-import com.example.vistreamv2.dtos.response.credit.CreditResDto;
-import com.example.vistreamv2.dtos.response.media.DetailsMediaDto;
+import com.example.vistreamv2.dtos.response.media.DetailsMediaResDto;
 import com.example.vistreamv2.dtos.response.media.credit.MediaCreditResDto;
-import com.example.vistreamv2.dtos.response.movie.MovieResDto;
-import com.example.vistreamv2.models.entity.Credit;
-import com.example.vistreamv2.models.entity.Genre;
 import com.example.vistreamv2.models.entity.Media;
-import com.example.vistreamv2.models.entity.MediaCredit;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -19,8 +14,8 @@ import java.util.stream.Collectors;
 public class MediaMapper {
     private final ModelMapper modelMapper;
 
-    public DetailsMediaDto mapToDto(Media media){
-        DetailsMediaDto dto = modelMapper.map(media, DetailsMediaDto.class);
+    public DetailsMediaResDto mapToDto(Media media){
+        DetailsMediaResDto dto = modelMapper.map(media, DetailsMediaResDto.class);
         // Configure custom mapping for nested objects
 
         dto.setCredits(media.getCredits().stream().map(credit -> modelMapper.map(credit, MediaCreditResDto.class))

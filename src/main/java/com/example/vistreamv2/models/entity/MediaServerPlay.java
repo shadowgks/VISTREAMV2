@@ -23,13 +23,13 @@ public class MediaServerPlay {
     @ManyToOne
     @MapsId("idServer")
     @JoinColumn(name = "server_id")
-    private ServerPlay credit;
+    private ServerPlay serverPlay;
     @ManyToOne
-    @MapsId("idSeason")
+//    @MapsId("idSeason")
     @JoinColumn(name = "season_id")
     private Season season;
     @ManyToOne
-    @MapsId("idEpisode")
+//    @MapsId("idEpisode")
     @JoinColumn(name = "episode_id")
     private Episode episode;
     @Column(length = 5000)

@@ -1,5 +1,6 @@
 package com.example.vistreamv2.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class Season {
     private Long id;
     @Column(unique = true)
     private Long idTmdb;
-    private String name;
+    private String title;
     private Integer seasonNumber;
     private String picture;
     private Double voteAverage;
@@ -29,9 +30,11 @@ public class Season {
 
     @ManyToOne
     @JoinColumn(name = "media_id")
+    @JsonBackReference
     private Media media;
 
     @OneToMany(mappedBy = "season")
+    @JsonBackReference
     private Set<MediaServerPlay> serverPlays;
 
     @OneToMany(mappedBy = "season")

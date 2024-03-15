@@ -3,10 +3,10 @@ package com.example.vistreamv2.dtos.response.media;
 import com.example.vistreamv2.dtos.response.country.CountryResDto;
 import com.example.vistreamv2.dtos.response.genre.GenreResDto;
 import com.example.vistreamv2.dtos.response.media.credit.MediaCreditResDto;
+import com.example.vistreamv2.dtos.response.media.serverPlay.MediaServerPlayResDto;
 import com.example.vistreamv2.dtos.response.production.ProductionResDto;
 import com.example.vistreamv2.dtos.response.video.VideoResDto;
 import com.example.vistreamv2.models.entity.*;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DetailsMediaDto {
+public class DetailsMediaResDto {
     private Long idTmdb;
     private String idImdb;
     private String title;
@@ -43,6 +43,6 @@ public class DetailsMediaDto {
     private Set<MediaCreditResDto> credits;
     private Set<Season> seasons;
     private Set<Watchlist> watchlists;
-    private Set<ServerPlay> serverPlays;
+    private Set<MediaServerPlayResDto> serverPlays;
     private Set<Slider> sliders;
 }

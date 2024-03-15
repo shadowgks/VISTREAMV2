@@ -1,6 +1,5 @@
 package com.example.vistreamv2.rest.controllers;
 
-import com.example.vistreamv2.dtos.response.media.DetailsMediaDto;
 import com.example.vistreamv2.dtos.response.movie.MovieResDto;
 import com.example.vistreamv2.mapper.MediaMapper;
 import com.example.vistreamv2.mapper.MovieMapper;
