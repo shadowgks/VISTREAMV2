@@ -2,14 +2,9 @@ package com.example.vistreamv2.models.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.commons.text.CharacterPredicates;
-import org.apache.commons.text.RandomStringGenerator;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -84,7 +79,7 @@ public class Media {
     private Set<Watchlist> watchlists;
 
     @OneToMany(mappedBy = "media")
-    private Set<MediaServerPlay> serverPlays;
+    private Set<MediaServerPlayEpisode> serverPlays;
 
     @OneToMany(mappedBy = "media")
     @OrderBy(value = "_order")

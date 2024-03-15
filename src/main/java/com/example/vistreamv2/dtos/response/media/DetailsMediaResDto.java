@@ -3,7 +3,7 @@ package com.example.vistreamv2.dtos.response.media;
 import com.example.vistreamv2.dtos.response.country.CountryResDto;
 import com.example.vistreamv2.dtos.response.genre.GenreResDto;
 import com.example.vistreamv2.dtos.response.media.credit.MediaCreditResDto;
-import com.example.vistreamv2.dtos.response.media.serverPlay.MediaServerPlayResDto;
+import com.example.vistreamv2.dtos.response.media.serverPlay.MediaServerPlayEpisodeResDto;
 import com.example.vistreamv2.dtos.response.production.ProductionResDto;
 import com.example.vistreamv2.dtos.response.video.VideoResDto;
 import com.example.vistreamv2.models.entity.*;
@@ -43,6 +43,6 @@ public class DetailsMediaResDto {
     private Set<MediaCreditResDto> credits;
     private Set<Season> seasons;
     private Set<Watchlist> watchlists;
-    private Set<MediaServerPlayResDto> serverPlays;
+    private Set<MediaServerPlayEpisodeResDto> serverPlays;
     private Set<Slider> sliders;
 }

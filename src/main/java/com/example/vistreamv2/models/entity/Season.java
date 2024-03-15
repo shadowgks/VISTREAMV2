@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,10 +31,6 @@ public class Season {
     @JoinColumn(name = "media_id")
     @JsonBackReference
     private Media media;
-
-    @OneToMany(mappedBy = "season")
-    @JsonBackReference
-    private Set<MediaServerPlay> serverPlays;
 
     @OneToMany(mappedBy = "season")
     private Set<Episode> episodes;

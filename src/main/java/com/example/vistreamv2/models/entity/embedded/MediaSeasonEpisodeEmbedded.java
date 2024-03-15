@@ -12,13 +12,9 @@
 //@Builder
 //@NoArgsConstructor
 //@AllArgsConstructor
-//public class MediaServerPlayEmbedded implements Serializable {
+//public class MediaSeasonEpisodeEmbedded implements Serializable {
 //    @Column(name = "media_id")
 //    private Long idMedia;
-//    @Column(name = "server_id")
-//    private Long idServer;
-////    @Column(name = "season_id")
-////    private Long idSeason;
-////    @Column(name = "episode_id")
-////    private Long idEpisode;
+//    @Column(name = "season_id")
+//    private Long idSeason;
 //}

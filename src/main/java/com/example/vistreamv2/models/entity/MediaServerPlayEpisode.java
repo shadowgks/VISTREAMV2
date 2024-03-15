@@ -1,6 +1,5 @@
 package com.example.vistreamv2.models.entity;
 
-import com.example.vistreamv2.models.entity.embedded.MediaServerPlayEmbedded;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,27 +10,21 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "media_servers")
-public class MediaServerPlay {
-    @EmbeddedId
-    private MediaServerPlayEmbedded id;
+@Table(name = "media_servers_episode")
+public class MediaServerPlayEpisode {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(length = 5000)
+    private String mediaPath;
+
     @ManyToOne
-    @MapsId("idMedia")
     @JoinColumn(name = "media_id")
     @JsonBackReference
     private Media media;
     @ManyToOne
-    @MapsId("idServer")
     @JoinColumn(name = "server_id")
     private ServerPlay serverPlay;
     @ManyToOne
-//    @MapsId("idSeason")
-    @JoinColumn(name = "season_id")
-    private Season season;
-    @ManyToOne
-//    @MapsId("idEpisode")
     @JoinColumn(name = "episode_id")
     private Episode episode;
-    @Column(length = 5000)
-    private String mediaPath;
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,5 +27,5 @@ public class Episode {
 
     @OneToMany(mappedBy = "episode")
     @JsonBackReference
-    private Set<MediaServerPlay> serverPlays;
+    private Set<MediaServerPlayEpisode> serverPlays;
 }
