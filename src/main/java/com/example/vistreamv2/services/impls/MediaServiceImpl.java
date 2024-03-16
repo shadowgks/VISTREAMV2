@@ -1,6 +1,8 @@
 package com.example.vistreamv2.services.impls;
 
 import com.example.vistreamv2.exception.custom.NotFoundMediaException;
+import com.example.vistreamv2.models.entity.Country;
+import com.example.vistreamv2.models.entity.Genre;
 import com.example.vistreamv2.models.entity.Media;
 import com.example.vistreamv2.repositories.MediaRepository;
 import com.example.vistreamv2.services.MediaService;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,18 @@ public class MediaServiceImpl implements MediaService {
         return mediaRepository.findMediaByIdTmdb(idTmdb)
                 .orElseThrow(() -> new NotFoundMediaException("Not this media: "+idTmdb));
     }
+
+    @Override
+    public Set<Media> mediaAlsoLike(Set<Country> countries, Set<Genre> genres) {
+        return mediaRepository.findMediaByCountriesInAndGenresIn(countries, genres)
+                .orElseThrow(() -> new NotFoundMediaException("This media does not have any content similar to the other media!"));
+    }
+
+//    @Override
+//    public void test(String s, SetString c, String g) {
+//        mediaRepository.findMediaByShortLinkAndCountriesLikeAndGenres(s, c, g)
+//                .orElseThrow(() -> new NotFoundMediaException("Not this media: "+s));
+//    }
 
 
     @Override

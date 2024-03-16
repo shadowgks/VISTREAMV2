@@ -1,5 +1,7 @@
 package com.example.vistreamv2.repositories;
 
+import com.example.vistreamv2.models.entity.Country;
+import com.example.vistreamv2.models.entity.Genre;
 import com.example.vistreamv2.models.entity.Media;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
@@ -25,5 +28,8 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
             Pageable pageable);
     Optional<Media> findMediaByOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
     Optional<Media> findMediaByShortLink(String shortLink);
+
+    Optional<Set<Media>> findMediaByCountriesInAndGenresIn(Set<Country> countries, Set<Genre> genres);
+
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

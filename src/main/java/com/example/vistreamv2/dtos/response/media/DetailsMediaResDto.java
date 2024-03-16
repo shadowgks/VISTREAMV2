@@ -40,9 +40,11 @@ public class DetailsMediaResDto {
     private Set<CountryResDto> countries;
     private Set<ProductionResDto> productions;
     private Set<VideoResDto> videos;
+    private Set<VideoResDto> trailers;
     private Set<MediaCreditResDto> credits;
     private Set<Season> seasons;
     private Set<Watchlist> watchlists;
     private Set<MediaServerPlayEpisodeResDto> serverPlays;
     private Set<Slider> sliders;
+    private Set<AlsoLikeResDto> alsoLikes;
 }
