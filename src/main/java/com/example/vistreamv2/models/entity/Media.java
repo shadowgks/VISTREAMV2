@@ -82,7 +82,6 @@ public class Media {
     private Set<MediaServerPlayEpisode> serverPlays;
 
     @OneToMany(mappedBy = "media")
-    @OrderBy(value = "_order")
     private Set<MediaCredit> credits;
 
     @OneToMany(mappedBy = "media")

@@ -61,15 +61,10 @@ public class MediaController {
     @GetMapping("/{shortLink}")
     public ResponseEntity<Response<Object>> findMediaByShortLink(@PathVariable String shortLink){
         Media media = mediaService.findMediaByShortLink(shortLink);
-        Set<Media> alsoLike = mediaService.mediaAlsoLike(media.getCountries(), media.getGenres());
-        Set<Media> filterAlsoLike = alsoLike.stream()
-                .filter(m -> !media.getId().equals(m.getId()))
-                .collect(Collectors.toSet());
-
+        Set<Media> alsoLikes = mediaService.mediaAlsoLike(media.getCountries(), media.getGenres(), media.getProductions());
         return ResponseEntity.ok(Response.builder()
                 .message("Success")
-                .result(mediaMapper.mapToDto(media, filterAlsoLike))
-
+                .result(mediaMapper.mapToDto(media, alsoLikes))
                 .build());
     }
 }

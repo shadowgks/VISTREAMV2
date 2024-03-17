@@ -1,8 +1,6 @@
 package com.example.vistreamv2.repositories;
 
-import com.example.vistreamv2.models.entity.Country;
-import com.example.vistreamv2.models.entity.Genre;
-import com.example.vistreamv2.models.entity.Media;
+import com.example.vistreamv2.models.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,7 +27,9 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     Optional<Media> findMediaByOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
     Optional<Media> findMediaByShortLink(String shortLink);
 
-    Optional<Set<Media>> findMediaByCountriesInAndGenresIn(Set<Country> countries, Set<Genre> genres);
+    Optional<Set<Media>> findMediaByCountriesInAndGenresInAndProductionsIn(Set<Country> countries,
+                                                                                   Set<Genre> genres,
+                                                                                   Set<Production> productions);
 
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

@@ -1,9 +1,7 @@
 package com.example.vistreamv2.services.impls;
 
 import com.example.vistreamv2.exception.custom.NotFoundMediaException;
-import com.example.vistreamv2.models.entity.Country;
-import com.example.vistreamv2.models.entity.Genre;
-import com.example.vistreamv2.models.entity.Media;
+import com.example.vistreamv2.models.entity.*;
 import com.example.vistreamv2.repositories.MediaRepository;
 import com.example.vistreamv2.services.MediaService;
 import lombok.RequiredArgsConstructor;
@@ -37,18 +35,12 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Set<Media> mediaAlsoLike(Set<Country> countries, Set<Genre> genres) {
-        return mediaRepository.findMediaByCountriesInAndGenresIn(countries, genres)
+    public Set<Media> mediaAlsoLike(Set<Country> countries,
+                                    Set<Genre> genres,
+                                    Set<Production> productions) {
+        return mediaRepository.findMediaByCountriesInAndGenresInAndProductionsIn(countries, genres, productions)
                 .orElseThrow(() -> new NotFoundMediaException("This media does not have any content similar to the other media!"));
     }
-
-//    @Override
-//    public void test(String s, SetString c, String g) {
-//        mediaRepository.findMediaByShortLinkAndCountriesLikeAndGenres(s, c, g)
-//                .orElseThrow(() -> new NotFoundMediaException("Not this media: "+s));
-//    }
-
-
     @Override
     public Boolean checkMediaIsFounded(Media media) {
         Optional<Media> checkMedia = mediaRepository.findMediaByOriginalTitleAndReleaseDate(
