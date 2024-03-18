@@ -84,8 +84,8 @@ public class Media {
     @OneToMany(mappedBy = "media")
     private Set<MediaCredit> credits;
 
-    @OneToMany(mappedBy = "media")
-    private Set<Slider> sliders;
+    @ManyToOne
+    private Slider slider;
 
     @ManyToOne
     private TypeQuality typeQuality;

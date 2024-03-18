@@ -1,18 +1,16 @@
-package com.example.vistreamv2.dtos.response.movie;
+package com.example.vistreamv2.dtos.response.media;
 
 import com.example.vistreamv2.models.entity.TypeQuality;
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieResDto {
+public class ShortMediaResDto {
     private Long idTmdb;
     private String idImdb;
     private String title;

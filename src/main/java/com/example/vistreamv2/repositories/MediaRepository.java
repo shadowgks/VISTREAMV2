@@ -27,7 +27,7 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     Optional<Media> findMediaByOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
     Optional<Media> findMediaByShortLink(String shortLink);
 
-    Optional<Set<Media>> findMediaByCountriesInAndGenresInAndProductionsIn(Set<Country> countries,
+    Optional<Set<Media>> findMediaByCountriesInAndGenresInOrProductionsIn(Set<Country> countries,
                                                                                    Set<Genre> genres,
                                                                                    Set<Production> productions);
 

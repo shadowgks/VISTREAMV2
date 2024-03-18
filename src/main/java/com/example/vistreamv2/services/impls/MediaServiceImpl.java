@@ -38,7 +38,7 @@ public class MediaServiceImpl implements MediaService {
     public Set<Media> mediaAlsoLike(Set<Country> countries,
                                     Set<Genre> genres,
                                     Set<Production> productions) {
-        return mediaRepository.findMediaByCountriesInAndGenresInAndProductionsIn(countries, genres, productions)
+        return mediaRepository.findMediaByCountriesInAndGenresInOrProductionsIn(countries, genres, productions)
                 .orElseThrow(() -> new NotFoundMediaException("This media does not have any content similar to the other media!"));
     }
     @Override

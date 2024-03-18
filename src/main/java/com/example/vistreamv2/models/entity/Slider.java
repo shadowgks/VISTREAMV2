@@ -3,6 +3,9 @@ package com.example.vistreamv2.models.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -13,9 +16,10 @@ public class Slider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
-    private String picture;
+    private LocalDateTime date;
 
-    @ManyToOne
-    private Media media;
+    @OneToMany(mappedBy = "slider")
+    private Set<MediaSlider> mediaSet;
 }

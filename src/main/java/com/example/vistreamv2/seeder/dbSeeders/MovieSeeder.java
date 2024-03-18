@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class MovieSeeder {
@@ -54,7 +55,7 @@ public class MovieSeeder {
 
     public void fetchMediaTmdb() throws IOException, InterruptedException{
         long countPage = 1;
-        long totalPages = 5;
+        long totalPages = 10;
         do {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(TMDB_BASE_URL_V3 + "/discover/movie?include_adult=true&include_video=true&page="+countPage+"&sort_by=popularity.desc&api_key=" + TMDB_API_KEY))
@@ -95,7 +96,7 @@ public class MovieSeeder {
         JsonNode productionNode = rootNode.get("production_companies");
         JsonNode countriesNode = rootNode.get("production_countries");
         JsonNode videosNode = rootNode.get("videos").get("results");
-        JsonNode spokenLanguagesNode = rootNode.get("spoken_languages");
+//        JsonNode spokenLanguagesNode = rootNode.get("spoken_languages");
 
         // Store data Genres
         Set<Genre> genresCollect = new HashSet<>();
@@ -166,8 +167,14 @@ public class MovieSeeder {
             String videoId = item.get("id").asText();
             Optional<Videos> existingVideos = videosRepository.findVideosByIdTmdb(videoId);
             Videos video;
+            String publishedAt = item.get("published_at").asText();
             //Parse Date Time
-            LocalDateTime publishedAt = LocalDateTime.parse(item.get("published_at").asText(), DateTimeFormatter.ISO_DATE_TIME);
+            LocalDateTime publishedAtDate;
+            if(publishedAt.isEmpty()){
+                publishedAtDate = null;
+            }else{
+                publishedAtDate = LocalDateTime.parse(publishedAt, DateTimeFormatter.ISO_DATE_TIME);
+            }
             //Object new video
             if(existingVideos.isPresent()){
                 video = existingVideos.get();
@@ -180,7 +187,7 @@ public class MovieSeeder {
                         ._size(item.get("size").asInt())
                         ._type(item.get("type").asText())
                         ._official(item.get("official").asText())
-                        ._publishedAt(publishedAt)
+                        ._publishedAt(publishedAtDate)
                         .build();
                 videosNew.add(video);
             }
@@ -192,7 +199,13 @@ public class MovieSeeder {
         // Parse Date
         String title = rootNode.get("title").asText();
         String titleOriginal = rootNode.get("original_title").asText();
-        LocalDate releaseDate = LocalDate.parse(rootNode.get("release_date").asText());
+        String releaseDate = rootNode.get("release_date").asText();
+        LocalDate releaseDateParse;
+        if (releaseDate.isEmpty()){
+            releaseDateParse = null;
+        }else{
+            releaseDateParse = LocalDate.parse(releaseDate);
+        }
         String shortLink = title != null ? generateShortLink(title) : generateShortLink(titleOriginal);
         Media media = Media.builder()
                 .idTmdb(idTmdb)
@@ -203,7 +216,7 @@ public class MovieSeeder {
                 .posterPath(rootNode.get("poster_path").asText())
                 .backDropPath(rootNode.get("backdrop_path").asText())
                 .status(rootNode.get("status").asText())
-                .releaseDate(releaseDate)
+                .releaseDate(releaseDateParse)
                 .duration(rootNode.get("runtime").asInt())
                 .overview(rootNode.get("overview").asText())
                 .originalLanguage(rootNode.get("original_language").asText())
@@ -222,7 +235,6 @@ public class MovieSeeder {
 
         saveCredits(idTmdb, mediaSaved);
     }
-
 
     public void saveCredits(Long idMediaTmdb, Media media) throws IOException, InterruptedException{
         HttpRequest request = HttpRequest.newBuilder()

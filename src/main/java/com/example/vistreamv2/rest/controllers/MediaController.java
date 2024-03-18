@@ -1,10 +1,13 @@
 package com.example.vistreamv2.rest.controllers;
 
-import com.example.vistreamv2.dtos.response.movie.MovieResDto;
+import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
 import com.example.vistreamv2.mapper.MediaMapper;
 import com.example.vistreamv2.mapper.MovieMapper;
+import com.example.vistreamv2.mapper.SliderMapper;
 import com.example.vistreamv2.models.entity.Media;
+import com.example.vistreamv2.models.entity.Slider;
 import com.example.vistreamv2.services.MediaService;
+import com.example.vistreamv2.services.SliderService;
 import com.example.vistreamv2.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,15 +26,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MediaController {
     private final MediaService mediaService;
+    private final SliderService sliderService;
     private final MovieMapper movieMapper;
     private final MediaMapper mediaMapper;
+    private final SliderMapper sliderMapper;
 
     @GetMapping
     public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
                                                         @RequestParam Optional<String> typeMedia,
                                                         @RequestParam Optional<Integer> numPage,
                                                         @RequestParam Optional<Integer> numSize){
-        Map<String, Page<MovieResDto>> stringListMap = new HashMap<>();
+        Map<String, Page<ShortMediaResDto>> stringListMap = new HashMap<>();
         // initialize pageable default
         Pageable pageable = PageRequest.of(
                 numPage.orElse(0),
@@ -44,12 +49,12 @@ public class MediaController {
                 pageable
         );
         // Mapped data
-        List<MovieResDto> movieResDtoList = mediaPage.stream()
+        List<ShortMediaResDto> shortMediaResDtoList = mediaPage.stream()
                 .map(movieMapper::mapToDto)
                 .toList();
 
         // Insert data in PageImpl class
-        Page<MovieResDto> movieResDtoPage = new PageImpl<>(movieResDtoList, pageable, mediaPage.getTotalElements());
+        Page<ShortMediaResDto> movieResDtoPage = new PageImpl<>(shortMediaResDtoList, pageable, mediaPage.getTotalElements());
         // Set data pageble
         stringListMap.put("page", movieResDtoPage);
         return ResponseEntity.ok(Response.builder()
@@ -65,6 +70,17 @@ public class MediaController {
         return ResponseEntity.ok(Response.builder()
                 .message("Success")
                 .result(mediaMapper.mapToDto(media, alsoLikes))
+                .build());
+    }
+
+    @GetMapping("/sliders")
+    public  ResponseEntity<Response<Object>> slidersFind(){
+        List<Slider> sliders = sliderService.findAllSlider();
+        return ResponseEntity.ok(Response.builder()
+                .message("Success")
+                .result(sliders.stream()
+                        .map(sliderMapper::mapToDto)
+                        .toList())
                 .build());
     }
 }
