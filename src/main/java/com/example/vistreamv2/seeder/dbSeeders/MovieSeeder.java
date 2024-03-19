@@ -55,7 +55,7 @@ public class MovieSeeder {
 
     public void fetchMediaTmdb() throws IOException, InterruptedException{
         long countPage = 1;
-        long totalPages = 10;
+        long totalPages = 5;
         do {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(TMDB_BASE_URL_V3 + "/discover/movie?include_adult=true&include_video=true&page="+countPage+"&sort_by=popularity.desc&api_key=" + TMDB_API_KEY))

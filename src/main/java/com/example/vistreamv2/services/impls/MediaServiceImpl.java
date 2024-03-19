@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -44,9 +45,9 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Set<Media> findAllMediaRecommended(String type) {
-        return mediaRepository.findAllMediaByTypeMediaOrderByPopularityDesc(type)
-                .orElseThrow(() -> new NotFoundMediaException("Not found any media by this type: "+type));
+    public List<Media> findAllMediaRecommended(String typeMedia, Integer limitData) {
+        return mediaRepository.findAllMediaByTypeMediaOrderOrderByPopularityAndLimit(typeMedia, limitData)
+                .orElseThrow(() -> new NotFoundMediaException("Not found any media by this type: "+typeMedia));
     }
 
     @Override

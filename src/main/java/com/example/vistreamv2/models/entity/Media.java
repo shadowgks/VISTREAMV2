@@ -39,7 +39,6 @@ public class Media {
     private Integer voteCount;
     private String typeMedia;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "media-genres",

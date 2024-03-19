@@ -2,16 +2,14 @@ package com.example.vistreamv2.mapper;
 
 import com.example.vistreamv2.dtos.response.media.AlsoLikeResDto;
 import com.example.vistreamv2.dtos.response.media.DetailsMediaResDto;
+import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
 import com.example.vistreamv2.dtos.response.media.credit.MediaCreditResDto;
 import com.example.vistreamv2.dtos.response.video.VideoResDto;
-import com.example.vistreamv2.models.entity.Credit;
 import com.example.vistreamv2.models.entity.Media;
-import com.example.vistreamv2.models.entity.MediaCredit;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +18,7 @@ import java.util.stream.Collectors;
 public class MediaMapper {
     private final ModelMapper modelMapper;
 
-    public DetailsMediaResDto mapToDto(Media media, Set<Media> alsoLikes){
+    public DetailsMediaResDto mapToMediaAlsoLikeDto(Media media, Set<Media> alsoLikes){
         DetailsMediaResDto dto = modelMapper.map(media, DetailsMediaResDto.class);
         // Configure custom mapping for nested objects
         dto.setTrailers(media.getVideos().stream()

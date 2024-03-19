@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public interface MediaService {
     Set<Media> mediaAlsoLike(Set<Country> countries,
                              Set<Genre> genres,
                              Set<Production> productions);
-    Set<Media> findAllMediaRecommended(String type);
+    List<Media> findAllMediaRecommended(String type, Integer limitData);
     Boolean checkMediaIsFounded(Media media);
     Media saveMedia(Media media);
     Media updateMedia(Long id, Media media);

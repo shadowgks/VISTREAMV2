@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,7 +31,8 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     Optional<Set<Media>> findMediaByCountriesInAndGenresInOrProductionsIn(Set<Country> countries,
                                                                                    Set<Genre> genres,
                                                                                    Set<Production> productions);
-    Optional<Set<Media>> findAllMediaByTypeMediaOrderByPopularityDesc(String typeMedia);
+    @Query("SELECT m FROM Media m WHERE m.typeMedia = :typeMedia ORDER BY m.popularity DESC LIMIT :limitData")
+    Optional<List<Media>> findAllMediaByTypeMediaOrderOrderByPopularityAndLimit(String typeMedia, Integer limitData);
 
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

@@ -69,17 +69,21 @@ public class MediaController {
         Set<Media> alsoLikes = mediaService.mediaAlsoLike(media.getCountries(), media.getGenres(), media.getProductions());
         return ResponseEntity.ok(Response.builder()
                 .message("Success")
-                .result(mediaMapper.mapToDto(media, alsoLikes))
+                .result(mediaMapper.mapToMediaAlsoLikeDto(media, alsoLikes))
                 .build());
     }
 
 
-//    @GetMapping("/recommended/{type_media}")
-//    public ResponseEntity<Response<Object>> mediaRecommended(@PathVariable("type_media") Optional<String> value){
-//        Set<Media> mediaList = mediaService.findAllMediaRecommended(value.orElse("movie"));
-//        return ResponseEntity.ok(Response.builder()
-//                .message("Success")
-//                .result(mediaMapper.mapToDto())
-//                .build());
-//    }
+    @GetMapping("/recommended")
+    public ResponseEntity<Response<Object>> findAllMediaRecommended(@RequestParam("type_media") Optional<String> typeMedia,
+                                                                    @RequestParam("limit_data") Optional<Integer> limitData){
+        List<Media> mediaList = mediaService.findAllMediaRecommended(typeMedia.orElse("movie"),
+                limitData.orElse(12));
+        return ResponseEntity.ok(Response.builder()
+                .message("Success")
+                .result(mediaList.stream()
+                        .map(movieMapper::mapToDto)
+                        .toList())
+                .build());
+    }
 }
