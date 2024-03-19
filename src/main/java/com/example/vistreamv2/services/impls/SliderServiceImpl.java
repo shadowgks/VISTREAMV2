@@ -17,6 +17,15 @@ public class SliderServiceImpl implements SliderService {
     @Override
     public List<Slider> findAllSlider() {
         List<Slider> sliders = sliderRepository.findAll();
+        if(sliders.isEmpty()){
+            throw new IllegalArgumentException("Not found any sliders");
+        }
         return sliders;
+    }
+
+    @Override
+    public Slider findSliderByIsEnabled(Boolean value) {
+        return sliderRepository.findByIsEnabled(value)
+                .orElseThrow(() -> new IllegalArgumentException("Not found any slide by this value" +value));
     }
 }

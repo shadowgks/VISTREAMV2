@@ -1,8 +1,6 @@
 package com.example.vistreamv2.dtos.response.slider;
 
 import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
-import com.example.vistreamv2.models.entity.Media;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,5 +14,6 @@ import java.util.Set;
 public class SliderResDto {
     private String name;
     private LocalDateTime date;
+    private Boolean isEnabled;
     private Set<ShortMediaResDto> mediaSet;
 }

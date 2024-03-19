@@ -19,6 +19,8 @@ public class Slider {
     @Column(unique = true)
     private String name;
     private LocalDateTime date;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean isEnabled = false;
 
     @OneToMany(mappedBy = "slider")
     private Set<MediaSlider> mediaSet;

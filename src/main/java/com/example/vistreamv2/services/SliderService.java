@@ -8,4 +8,5 @@ import java.util.Set;
 
 public interface SliderService {
     List<Slider> findAllSlider();
+    Slider findSliderByIsEnabled(Boolean value);
 }

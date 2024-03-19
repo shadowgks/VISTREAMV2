@@ -9,6 +9,7 @@ import com.example.vistreamv2.models.entity.Slider;
 import com.example.vistreamv2.services.MediaService;
 import com.example.vistreamv2.services.SliderService;
 import com.example.vistreamv2.utils.Response;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,10 +27,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MediaController {
     private final MediaService mediaService;
-    private final SliderService sliderService;
     private final MovieMapper movieMapper;
     private final MediaMapper mediaMapper;
-    private final SliderMapper sliderMapper;
+
 
     @GetMapping
     public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
@@ -73,14 +73,13 @@ public class MediaController {
                 .build());
     }
 
-    @GetMapping("/sliders")
-    public  ResponseEntity<Response<Object>> slidersFind(){
-        List<Slider> sliders = sliderService.findAllSlider();
-        return ResponseEntity.ok(Response.builder()
-                .message("Success")
-                .result(sliders.stream()
-                        .map(sliderMapper::mapToDto)
-                        .toList())
-                .build());
-    }
+
+//    @GetMapping("/recommended/{type_media}")
+//    public ResponseEntity<Response<Object>> mediaRecommended(@PathVariable("type_media") Optional<String> value){
+//        Set<Media> mediaList = mediaService.findAllMediaRecommended(value.orElse("movie"));
+//        return ResponseEntity.ok(Response.builder()
+//                .message("Success")
+//                .result(mediaMapper.mapToDto())
+//                .build());
+//    }
 }

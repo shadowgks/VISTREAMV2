@@ -30,6 +30,7 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     Optional<Set<Media>> findMediaByCountriesInAndGenresInOrProductionsIn(Set<Country> countries,
                                                                                    Set<Genre> genres,
                                                                                    Set<Production> productions);
+    Optional<Set<Media>> findAllMediaByTypeMediaOrderByPopularityDesc(String typeMedia);
 
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

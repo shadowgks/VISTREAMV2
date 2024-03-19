@@ -1,6 +1,7 @@
 package com.example.vistreamv2.services.impls;
 
 import com.example.vistreamv2.exception.custom.NotFoundMediaException;
+import com.example.vistreamv2.exception.custom.NotFoundUserException;
 import com.example.vistreamv2.models.entity.*;
 import com.example.vistreamv2.repositories.MediaRepository;
 import com.example.vistreamv2.services.MediaService;
@@ -41,6 +42,13 @@ public class MediaServiceImpl implements MediaService {
         return mediaRepository.findMediaByCountriesInAndGenresInOrProductionsIn(countries, genres, productions)
                 .orElseThrow(() -> new NotFoundMediaException("This media does not have any content similar to the other media!"));
     }
+
+    @Override
+    public Set<Media> findAllMediaRecommended(String type) {
+        return mediaRepository.findAllMediaByTypeMediaOrderByPopularityDesc(type)
+                .orElseThrow(() -> new NotFoundMediaException("Not found any media by this type: "+type));
+    }
+
     @Override
     public Boolean checkMediaIsFounded(Media media) {
         Optional<Media> checkMedia = mediaRepository.findMediaByOriginalTitleAndReleaseDate(
