@@ -92,7 +92,7 @@ public class MediaController {
     }
 
     @GetMapping("/genre-or-country/{genreOrCountry}")
-    public ResponseEntity<Response<Object>> findAllMediaGenre(@Valid
+    public ResponseEntity<Response<Object>> findAllMediaByGenreOrCountry(@Valid
                                                               @PathVariable("genreOrCountry") String genreOrCountry,
                                                               @RequestParam Optional<Integer> numPage,
                                                               @RequestParam Optional<Integer> numSize){
@@ -125,7 +125,6 @@ public class MediaController {
                 .map(mediaMapper::mapToShortMediaResDto)
                 .toList();
 
-        System.out.println(shortMediaResDtoList);
         // Insert data in PageImpl class
         Page<ShortMediaResDto> shortMediaResDtos = new PageImpl<>(shortMediaResDtoList, pageable, media.getTotalPages());
         stringListMap.put("page", shortMediaResDtos);
