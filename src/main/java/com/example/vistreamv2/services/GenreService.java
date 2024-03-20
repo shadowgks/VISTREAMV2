@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GenreService {
     List<Genre> findAllGenre();
-    Genre findByName(String name);
+    Genre findGenreByName(String name);
     Genre createGenre(Genre genre);
 
 }

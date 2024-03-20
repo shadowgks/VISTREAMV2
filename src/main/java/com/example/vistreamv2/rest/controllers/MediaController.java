@@ -2,8 +2,10 @@ package com.example.vistreamv2.rest.controllers;
 
 import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
 import com.example.vistreamv2.mapper.MediaMapper;
+import com.example.vistreamv2.models.entity.Country;
 import com.example.vistreamv2.models.entity.Genre;
 import com.example.vistreamv2.models.entity.Media;
+import com.example.vistreamv2.services.CountryService;
 import com.example.vistreamv2.services.GenreService;
 import com.example.vistreamv2.services.MediaService;
 import com.example.vistreamv2.utils.Response;
@@ -25,6 +27,7 @@ import java.util.*;
 public class MediaController {
     private final MediaService mediaService;
     private final GenreService genreService;
+    private final CountryService countryService;
     private final MediaMapper mediaMapper;
 
 
@@ -94,8 +97,18 @@ public class MediaController {
                                                               @RequestParam Optional<Integer> numPage,
                                                               @RequestParam Optional<Integer> numSize){
 
-        Object o = null;
-        Genre genre = genreService.findByName(genreOrCountry);
+        String name = null;
+        Genre genre = genreService.findGenreByName(genreOrCountry);
+        Country country = countryService.findCountryByName(genreOrCountry);
+        if (genre == null && country == null) {
+            throw new IllegalArgumentException("this name "+genreOrCountry+" not found in countries and genres");
+        }
+        if(genre == null){
+            name = country.getName();
+        }else if (country == null){
+            name = genre.getName();
+        }
+
         Map<String, Page<ShortMediaResDto>> stringListMap = new HashMap<>();
         // initialize pageable default
         Pageable pageable = PageRequest.of(
@@ -103,8 +116,8 @@ public class MediaController {
                 numSize.orElse(10)
         );
         //Get data
-        Page<Media> media = mediaService.findAllMediaByGenres(
-                genre,
+        Page<Media> media = mediaService.findAllMediaByGenresOrCountry(
+                name,
                 pageable
         );
         //Mapped Data

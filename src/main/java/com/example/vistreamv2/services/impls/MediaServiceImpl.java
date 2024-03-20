@@ -51,8 +51,8 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Page<Media> findAllMediaByGenres(Genre genre, Pageable pageable) {
-        return mediaRepository.findAllByGenre(genre, pageable)
+    public Page<Media> findAllMediaByGenresOrCountry(String genreOrCountry, Pageable pageable) {
+        return mediaRepository.findAllByGenreOrCountry(genreOrCountry, pageable)
                 .orElseThrow(() -> new NotFoundMediaException("Not found any media by this genres"));
     }
 

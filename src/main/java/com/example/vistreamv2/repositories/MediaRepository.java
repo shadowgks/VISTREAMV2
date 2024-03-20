@@ -34,7 +34,7 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
             + "ELSE m.popularity "
             + "END DESC LIMIT :limitData")
     Optional<List<Media>> findAllMediaByTypeMediaOrderOrderByAndLimit(String column, String typeMedia, Integer limitData);
-    @Query("SELECT DISTINCT m FROM Media m JOIN m.genres g WHERE g = :genre")
-    Optional<Page<Media>> findAllByGenre(Genre genre, Pageable pageable);
+    @Query("SELECT DISTINCT m FROM Media m JOIN m.genres g JOIN m.countries c WHERE g.name = :genreOrCountry OR c.name = :genreOrCountry")
+    Optional<Page<Media>> findAllByGenreOrCountry(String genreOrCountry, Pageable pageable);
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

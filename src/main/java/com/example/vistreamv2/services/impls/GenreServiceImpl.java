@@ -18,9 +18,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre findByName(String name) {
-        return genreRepository.findGenreByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("Not found this genre: "+name));
+    public Genre findGenreByName(String name) {
+        return genreRepository.findGenreByName(name);
     }
 
     @Override
