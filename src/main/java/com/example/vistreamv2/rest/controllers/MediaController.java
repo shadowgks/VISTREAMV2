@@ -94,7 +94,7 @@ public class MediaController {
                                                               @RequestParam Optional<Integer> numPage,
                                                               @RequestParam Optional<Integer> numSize){
 
-        Object o;
+        Object o = null;
         Genre genre = genreService.findByName(genreOrCountry);
         Map<String, Page<ShortMediaResDto>> stringListMap = new HashMap<>();
         // initialize pageable default
