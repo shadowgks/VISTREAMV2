@@ -16,7 +16,8 @@ public interface MediaService {
     Set<Media> mediaAlsoLike(Set<Country> countries,
                              Set<Genre> genres,
                              Set<Production> productions);
-    List<Media> findAllMediaRecommended(String type, Integer limitData);
+    List<Media> findAllMediaRecommended(String column, String type, Integer limitData);
+    Page<Media> findAllMediaByGenres(Genre genre, Pageable pageable);
     Boolean checkMediaIsFounded(Media media);
     Media saveMedia(Media media);
     Media updateMedia(Long id, Media media);

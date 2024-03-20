@@ -10,6 +10,7 @@ import com.example.vistreamv2.models.entity.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -41,7 +42,7 @@ public class DetailsMediaResDto {
     private Set<ProductionResDto> productions;
     private Set<VideoResDto> videos;
     private Set<VideoResDto> trailers;
-    private Set<MediaCreditResDto> credits;
+    private List<MediaCreditResDto> credits;
     private Set<Season> seasons;
     private Set<Watchlist> watchlists;
     private Set<MediaServerPlayEpisodeResDto> serverPlays;

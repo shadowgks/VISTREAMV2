@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,12 +26,15 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
             Pageable pageable);
     Optional<Media> findMediaByOriginalTitleAndReleaseDate(String originalTitle, LocalDate releaseDate);
     Optional<Media> findMediaByShortLink(String shortLink);
-
-    Optional<Set<Media>> findMediaByCountriesInAndGenresInOrProductionsIn(Set<Country> countries,
-                                                                                   Set<Genre> genres,
-                                                                                   Set<Production> productions);
-    @Query("SELECT m FROM Media m WHERE m.typeMedia = :typeMedia ORDER BY m.popularity DESC LIMIT :limitData")
-    Optional<List<Media>> findAllMediaByTypeMediaOrderOrderByPopularityAndLimit(String typeMedia, Integer limitData);
-
+    Optional<Set<Media>> findMediaByCountriesInAndGenresInOrProductionsIn(Set<Country> countries, Set<Genre> genres, Set<Production> productions);
+    @Query("SELECT m FROM Media m WHERE m.typeMedia = :typeMedia ORDER BY "
+            + "CASE "
+            + "WHEN :column = 'popularity' THEN m.popularity "
+            + "WHEN :column = 'releaseDate' THEN m.releaseDate "
+            + "ELSE m.popularity "
+            + "END DESC LIMIT :limitData")
+    Optional<List<Media>> findAllMediaByTypeMediaOrderOrderByAndLimit(String column, String typeMedia, Integer limitData);
+    @Query("SELECT DISTINCT m FROM Media m JOIN m.genres g WHERE g = :genre")
+    Optional<Page<Media>> findAllByGenre(Genre genre, Pageable pageable);
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
 }

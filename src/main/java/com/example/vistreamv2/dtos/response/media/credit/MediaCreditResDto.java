@@ -12,6 +12,7 @@ import lombok.*;
 public class MediaCreditResDto {
     private CreditResDto credit;
     private String _creditIdTmdb;
+    @OrderBy("ASC")
     private Integer _order;
     private String _character;
     private String _knownForDepartment;

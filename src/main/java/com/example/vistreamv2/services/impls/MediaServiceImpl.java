@@ -45,9 +45,15 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public List<Media> findAllMediaRecommended(String typeMedia, Integer limitData) {
-        return mediaRepository.findAllMediaByTypeMediaOrderOrderByPopularityAndLimit(typeMedia, limitData)
+    public List<Media> findAllMediaRecommended(String column, String typeMedia, Integer limitData) {
+        return mediaRepository.findAllMediaByTypeMediaOrderOrderByAndLimit(column, typeMedia, limitData)
                 .orElseThrow(() -> new NotFoundMediaException("Not found any media by this type: "+typeMedia));
+    }
+
+    @Override
+    public Page<Media> findAllMediaByGenres(Genre genre, Pageable pageable) {
+        return mediaRepository.findAllByGenre(genre, pageable)
+                .orElseThrow(() -> new NotFoundMediaException("Not found any media by this genres"));
     }
 
     @Override

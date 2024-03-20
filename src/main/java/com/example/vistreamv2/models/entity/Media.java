@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -81,7 +82,7 @@ public class Media {
     private Set<MediaServerPlayEpisode> serverPlays;
 
     @OneToMany(mappedBy = "media")
-    private Set<MediaCredit> credits;
+    private List<MediaCredit> credits;
 
     @ManyToOne
     private Slider slider;

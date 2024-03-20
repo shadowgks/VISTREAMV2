@@ -32,7 +32,13 @@ public class MediaMapper {
                 .collect(Collectors.toSet()));
         dto.setCredits(media.getCredits().stream()
                 .map(credit -> modelMapper.map(credit, MediaCreditResDto.class))
-                .collect(Collectors.toSet()));
+                .toList());
+        System.out.println(dto.getCredits());
         return dto;
     }
+
+    public ShortMediaResDto mapToShortMediaResDto(Media media){
+        return modelMapper.map(media, ShortMediaResDto.class);
+    }
+
 }
