@@ -19,6 +19,6 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<Country> findAllCountry() {
-        return countryRepository.findAll();
+        return countryRepository.findAllByOrderByNameAsc();
     }
 }
