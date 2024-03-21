@@ -27,7 +27,7 @@ public class CountryController {
         return ResponseEntity.ok(Response.builder()
                 .message("Success")
                 .result(countries.stream()
-                        .map(countryMapper a::mapToDto)
+                        .map(countryMapper::mapToDto)
                         .toList())
                 .build());
     }
