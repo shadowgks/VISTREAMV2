@@ -9,6 +9,7 @@ import com.example.vistreamv2.services.CountryService;
 import com.example.vistreamv2.services.GenreService;
 import com.example.vistreamv2.services.MediaService;
 import com.example.vistreamv2.utils.Response;
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,7 @@ public class MediaController {
         );
         // initialize request default
         Page<Media> mediaPage = mediaService.findAllMediaPageable(
-                typeMedia.orElse(""),
+                typeMedia.orElse(null), // Pass null if typeMedia is not provided
                 searchTerm.orElse(""),
                 pageable
         );

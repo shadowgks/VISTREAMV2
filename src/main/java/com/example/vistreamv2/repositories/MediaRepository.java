@@ -16,7 +16,8 @@ import java.util.Set;
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("SELECT m FROM Media m " +
-            "WHERE (:typeMedia IS NULL OR LOWER(m.typeMedia) = LOWER(:typeMedia)) " +
+            "WHERE ((:typeMedia IS NULL OR LOWER(m.typeMedia) = LOWER(:typeMedia)) " +
+            "OR (:typeMedia IS NULL AND m.typeMedia IS NULL)) " +
             "AND (LOWER(m.originalTitle) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
             "OR LOWER(m.originalLanguage) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
             "OR LOWER(m.title) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
