@@ -1,9 +1,11 @@
 package com.example.vistreamv2.dtos.response.media;
 
+import com.example.vistreamv2.dtos.response.genre.GenreResDto;
 import com.example.vistreamv2.models.entity.TypeQuality;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -29,4 +31,5 @@ public class ShortMediaResDto {
     private Integer voteCount;
     private String typeMedia;
     private TypeQuality typeQuality;
+    private Set<GenreResDto> genres;
 }
