@@ -38,4 +38,22 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("SELECT DISTINCT m FROM Media m JOIN m.genres g JOIN m.countries c WHERE g.name = :genreOrCountry OR c.name = :genreOrCountry")
     Optional<Page<Media>> findAllByGenreOrCountry(String genreOrCountry, Pageable pageable);
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
+//    @Query("SELECT m FROM Media m " +
+//            "WHERE ((:typeMedia IS NULL OR LOWER(m.typeMedia) = LOWER(:typeMedia)) " +
+//            "OR (:typeMedia IS NULL AND m.typeMedia IS NULL)) " +
+//            "OR (:countries IS EMPTY OR EXISTS (SELECT c FROM m.countries c WHERE c IN :countries)) " +
+//            "OR (:genres IS EMPTY OR EXISTS (SELECT g FROM m.genres g WHERE g IN :genres)) " +
+//            "OR (m.releaseDate = :releaseDate)")
+//@Query("SELECT m FROM Media m WHERE (:typeMedia IS NULL OR m.typeMedia = :typeMedia) " +
+//        "AND (:releaseDate IS NULL OR m.releaseDate = :releaseDate) " +
+//        "AND (COALESCE(:countries) IS NULL OR m.countries MEMBER OF :countries) " +
+//        "AND (COALESCE(:genres) IS NULL OR m.genres MEMBER OF :genres)")
+//Optional<Page<Media>> findMediaByTypeMediaOrReleaseDateOrCountriesOrGenresContaining(
+//        @Param("typeMedia") String typeMedia,
+//        @Param("releaseDate") LocalDate releaseDate,
+//        @Param("countries") List<Country> countries,
+//        @Param("genres") List<Genre> genres,
+//        Pageable pageable);
+
+
 }

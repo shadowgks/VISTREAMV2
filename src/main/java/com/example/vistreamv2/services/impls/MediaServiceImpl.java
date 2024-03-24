@@ -1,16 +1,15 @@
 package com.example.vistreamv2.services.impls;
 
 import com.example.vistreamv2.exception.custom.NotFoundMediaException;
-import com.example.vistreamv2.exception.custom.NotFoundUserException;
 import com.example.vistreamv2.models.entity.*;
 import com.example.vistreamv2.repositories.MediaRepository;
 import com.example.vistreamv2.services.MediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -66,6 +65,16 @@ public class MediaServiceImpl implements MediaService {
         }
         return true;
     }
+
+//    @Override
+//    public Page<Media> filterMedia(String typeMedia,
+//                                   LocalDate releaseDate,
+//                                   List<Country> countries,
+//                                   List<Genre> genres,
+//                                   Pageable pageable) {
+//        return mediaRepository.findMediaByTypeMediaOrReleaseDateOrCountriesOrGenresContaining(typeMedia, releaseDate, countries, genres, pageable)
+//                .orElseThrow(() -> new NotFoundMediaException("not found"));
+//    }
 
     @Override
     public Media saveMedia(Media media) {

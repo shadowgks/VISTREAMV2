@@ -1,5 +1,6 @@
 package com.example.vistreamv2.rest.controllers;
 
+import com.example.vistreamv2.dtos.requests.media.FilterMediaReq;
 import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
 import com.example.vistreamv2.mapper.MediaMapper;
 import com.example.vistreamv2.models.entity.Country;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -53,7 +55,6 @@ public class MediaController {
         List<ShortMediaResDto> shortMediaResDtoList = mediaPage.stream()
                 .map(mediaMapper::mapToShortMediaResDto)
                 .toList();
-        System.out.println(shortMediaResDtoList);
 
         // Insert data in PageImpl class
         Page<ShortMediaResDto> movieResDtoPage = new PageImpl<>(shortMediaResDtoList, pageable, mediaPage.getTotalElements());
@@ -134,5 +135,41 @@ public class MediaController {
                 .result(stringListMap)
                 .build());
     }
+
+//    @GetMapping("/filter")
+//    public ResponseEntity<Response<Object>> filterMedia(@Valid @RequestBody FilterMediaReq filterMediaReq,
+//                                                        @RequestParam Optional<Integer> numPage,
+//                                                        @RequestParam Optional<Integer> numSize){
+//        //get data
+//        List<Country> countries = filterMediaReq.getCountries();
+//        List<Genre> genres = filterMediaReq.getGenres();
+//        LocalDate releasedDate = filterMediaReq.getReleasedDate();
+//        String typeMedia = filterMediaReq.getTypeMedia();
+//
+//        Map<String, Page<ShortMediaResDto>> stringListMap = new HashMap<>();
+//        // initialize pageable default
+//        Pageable pageable = PageRequest.of(
+//                numPage.orElse(0),
+//                numSize.orElse(10)
+//        );
+//
+//        // initialize request default
+//        Page<Media> mediaPage = mediaService.filterMedia(typeMedia, releasedDate, countries, genres, pageable);
+//
+//        // Mapped data
+//        List<ShortMediaResDto> shortMediaResDtoList = mediaPage.stream()
+//                .map(mediaMapper::mapToShortMediaResDto)
+//                .toList();
+//
+//        // Insert data in PageImpl class
+//        Page<ShortMediaResDto> movieResDtoPage = new PageImpl<>(shortMediaResDtoList, pageable, mediaPage.getTotalElements());
+//        // Set data pageble
+//        stringListMap.put("page", movieResDtoPage);
+//        return ResponseEntity.ok(Response.builder()
+//                .message("Success")
+//                .result(stringListMap)
+//                .build());
+//
+//    }
 
 }
