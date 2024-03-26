@@ -76,9 +76,6 @@ public class Media {
     private Set<Season> seasons;
 
     @OneToMany(mappedBy = "media")
-    private Set<Watchlist> watchlists;
-
-    @OneToMany(mappedBy = "media")
     private Set<MediaServerPlayEpisode> serverPlays;
 
     @OneToMany(mappedBy = "media")

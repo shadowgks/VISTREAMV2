@@ -33,8 +33,13 @@ public class AppUser implements UserDetails {
     private LocalDateTime accessionDate;
     private Boolean isEnabled;
 
-    @OneToMany(mappedBy = "appUsers")
-    private List<Watchlist> watchlists;
+//    @OneToMany(mappedBy = "appUsers", fetch = FetchType.EAGER)
+//    private List<Watchlist> watchlists;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "watchlists",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "media_id"))
+    private Set<Media> watchlists;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_users",
