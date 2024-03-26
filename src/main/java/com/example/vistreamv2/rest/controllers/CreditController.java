@@ -1,5 +1,6 @@
 package com.example.vistreamv2.rest.controllers;
 
+import com.example.vistreamv2.dtos.requests.credit.CreditReqDto;
 import com.example.vistreamv2.dtos.response.credit.CreditResDto;
 import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
 import com.example.vistreamv2.mapper.CreditMapper;
@@ -7,21 +8,17 @@ import com.example.vistreamv2.models.entity.Credit;
 import com.example.vistreamv2.models.entity.Media;
 import com.example.vistreamv2.services.CreditService;
 import com.example.vistreamv2.utils.Response;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,5 +55,39 @@ public class CreditController {
                 .message("Success")
                 .result(stringListMap)
                 .build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Response<String>> savedCredits( @RequestBody List<CreditReqDto> creditReqDto){
+        List<Credit> credits = new ArrayList<>();
+        creditReqDto.forEach(c -> {
+            Credit credit = creditMapper.mapToEntity(c);
+            credits.add(credit);
+        });
+        creditService.savedCredits(credits);
+        return new ResponseEntity<>(Response.<String>builder()
+                .message("Created Credits Successfully")
+                .build(),
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response<CreditResDto>> deletedCredit(@RequestBody CreditReqDto creditReqDto,
+                                                                @PathVariable("id") Long id){
+        Credit credit = creditService.updateCredit(creditMapper.mapToEntity(creditReqDto), id);
+        return new ResponseEntity<>(Response.<CreditResDto>builder()
+                .result(creditMapper.mapToDto(credit))
+                .message("Updated Credit Successfully")
+                .build(),
+                HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response<String>> deletedCredit(@PathVariable("id") Long id){
+        creditService.deleteCredit(id);
+        return new ResponseEntity<>(Response.<String>builder()
+                .message("Deleted Credit Successfully")
+                .build(),
+                HttpStatus.OK);
     }
 }
