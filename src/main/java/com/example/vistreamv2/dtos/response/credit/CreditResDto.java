@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreditResDto {
+    private Long id;
     private Long idTmdb;
     private Boolean adult;
     private Integer gender;

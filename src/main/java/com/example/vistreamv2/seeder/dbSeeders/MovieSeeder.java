@@ -130,7 +130,7 @@ public class MovieSeeder {
             }else{
                 production = Production.builder()
                         .idTmdb(item.get("id").asLong())
-                        .logoPath(item.get("logo_path").asText())
+                        .logoPath("https://image.tmdb.org/t/p/w500" + item.get("logo_path").asText())
                         .originCountry(item.get("origin_country").asText())
                         .name(item.get("name").asText())
                         .build();
@@ -213,8 +213,8 @@ public class MovieSeeder {
                 .title(title)
                 .shortLink(shortLink)
                 .originalTitle(titleOriginal)
-                .posterPath(rootNode.get("poster_path").asText())
-                .backDropPath(rootNode.get("backdrop_path").asText())
+                .posterPath("https://image.tmdb.org/t/p/w500"+rootNode.get("poster_path").asText())
+                .backDropPath("https://image.tmdb.org/t/p/original"+rootNode.get("backdrop_path").asText())
                 .status(rootNode.get("status").asText())
                 .releaseDate(releaseDateParse)
                 .duration(rootNode.get("runtime").asInt())
@@ -261,7 +261,7 @@ public class MovieSeeder {
                         .gender(item.get("gender").asInt())
                         .name(item.get("original_name").asText())
                         .popularity(item.get("popularity").asDouble())
-                        .profilePath(item.get("profile_path").asText())
+                        .profilePath("https://image.tmdb.org/t/p/w500"+item.get("profile_path").asText())
                         .build();
                 savedCredit = creditRepository.save(credit);
             }

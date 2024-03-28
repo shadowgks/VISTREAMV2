@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,11 @@ public class CreditServiceImpl implements CreditService {
     public void savedCredits(List<Credit> credits) {
         credits.forEach(c -> checkCreditIdTmdb(c.getIdTmdb()));
         creditRepository.saveAll(credits);
+    }
+
+    @Override
+    public void saveCredit(Credit credit) {
+        creditRepository.save(credit);
     }
 
     @Override
@@ -50,7 +56,9 @@ public class CreditServiceImpl implements CreditService {
     }
 
     public void checkCreditIdTmdb(Long idTmdb){
-        creditRepository.findCreditByIdTmdb(idTmdb)
-                .orElseThrow(() -> new IllegalArgumentException("This id "+ idTmdb +" Tmdb already exist"));
+        Optional<Credit> credit = creditRepository.findCreditByIdTmdb(idTmdb);
+        if (credit.isPresent() && credit.get().getIdTmdb() != null){
+            throw new IllegalArgumentException("Sorry this "+idTmdb+" already exist!");
+        }
     }
 }

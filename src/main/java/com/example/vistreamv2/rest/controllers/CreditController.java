@@ -7,6 +7,7 @@ import com.example.vistreamv2.mapper.CreditMapper;
 import com.example.vistreamv2.models.entity.Credit;
 import com.example.vistreamv2.models.entity.Media;
 import com.example.vistreamv2.services.CreditService;
+import com.example.vistreamv2.services.S3Service;
 import com.example.vistreamv2.utils.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ import java.util.*;
 public class CreditController {
     private final CreditService creditService;
     private final CreditMapper creditMapper;
+    private final S3Service s3Service;
+
 
     @GetMapping
     public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
@@ -56,27 +59,37 @@ public class CreditController {
                 .result(stringListMap)
                 .build());
     }
-
+//    @PostMapping
+//    public ResponseEntity<Response<String>> savedCredits( @RequestBody List<CreditReqDto> creditReqDto){
+//        List<Credit> credits = new ArrayList<>();
+//        creditReqDto.forEach(c -> {
+//            Credit credit = creditMapper.mapToEntity(c);
+//            credits.add(credit);
+//        });
+//        creditService.savedCredits(credits);
+//        return new ResponseEntity<>(Response.<String>builder()
+//                .message("Created Credits Successfully")
+//                .build(),
+//                HttpStatus.CREATED);
+//    }
     @PostMapping
-    public ResponseEntity<Response<String>> savedCredits( @RequestBody List<CreditReqDto> creditReqDto){
-        List<Credit> credits = new ArrayList<>();
-        creditReqDto.forEach(c -> {
-            Credit credit = creditMapper.mapToEntity(c);
-            credits.add(credit);
-        });
-        creditService.savedCredits(credits);
+    public ResponseEntity<Response<String>> saveCredit(@ModelAttribute CreditReqDto creditReqDto){
+        String imageUrl = s3Service.uploadFile(creditReqDto.getFile());
+        creditReqDto.setProfilePath(imageUrl);
+        creditService.saveCredit(creditMapper.mapToEntity(creditReqDto));
         return new ResponseEntity<>(Response.<String>builder()
-                .message("Created Credits Successfully")
+                .message("Created Credit Successfully")
                 .build(),
                 HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<CreditResDto>> deletedCredit(@RequestBody CreditReqDto creditReqDto,
+    public ResponseEntity<Response<String>> updateCredit(@ModelAttribute CreditReqDto creditReqDto,
                                                                 @PathVariable("id") Long id){
-        Credit credit = creditService.updateCredit(creditMapper.mapToEntity(creditReqDto), id);
-        return new ResponseEntity<>(Response.<CreditResDto>builder()
-                .result(creditMapper.mapToDto(credit))
+        String imageUrl = s3Service.uploadFile(creditReqDto.getFile());
+        creditReqDto.setProfilePath(imageUrl);
+        creditService.updateCredit(creditMapper.mapToEntity(creditReqDto), id);
+        return new ResponseEntity<>(Response.<String>builder()
                 .message("Updated Credit Successfully")
                 .build(),
                 HttpStatus.OK);

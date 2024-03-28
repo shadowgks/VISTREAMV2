@@ -1,18 +1,10 @@
 package com.example.vistreamv2.dtos.response.user;
 
-import com.example.vistreamv2.dtos.response.media.ShortLinkResDto;
 import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
 import com.example.vistreamv2.dtos.response.role.RoleResDto;
-import com.example.vistreamv2.dtos.response.watchlist.WatchListResDto;
-import com.example.vistreamv2.models.entity.Media;
-import com.example.vistreamv2.models.entity.PermissionGroup;
-import com.example.vistreamv2.models.entity.Role;
-import com.example.vistreamv2.models.entity.Watchlist;
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -27,5 +19,5 @@ public class MeResourceResDTO {
     String email;
     LocalDateTime accessionDate;
     Set<RoleResDto> roles;
-    Set<ShortLinkResDto> watchlists;
+    Set<ShortMediaResDto> watchlists;
 }

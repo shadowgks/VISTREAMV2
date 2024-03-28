@@ -44,7 +44,6 @@ public class DetailsMediaResDto {
     private Set<VideoResDto> trailers;
     private List<MediaCreditResDto> credits;
     private Set<Season> seasons;
-    private Set<Watchlist> watchlists;
     private Set<MediaServerPlayEpisodeResDto> serverPlays;
     private Set<Slider> sliders;
     private Set<AlsoLikeResDto> alsoLikes;

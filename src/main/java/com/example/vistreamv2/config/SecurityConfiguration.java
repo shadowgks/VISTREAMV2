@@ -3,6 +3,7 @@ package com.example.vistreamv2.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,8 +26,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain config(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/v1.0.0/auth/**")
-                                .permitAll().anyRequest().authenticated())
+                        request.requestMatchers("/v1.0.0/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/v1.0.0/genre").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/v1.0.0/country").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/v1.0.0/media/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/v1.0.0/slider/**").permitAll()
+                                .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
