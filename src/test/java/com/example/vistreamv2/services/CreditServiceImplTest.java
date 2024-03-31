@@ -48,7 +48,7 @@ class CreditServiceImplTest {
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> creditService.findAllCreditPageable(searchTerm, pageable),
-                "Should throw NotFoundCreditException when no credits are found");
+                "Should throw IllegalArgumentException when no credits are found");
     }
 
     @Test
@@ -82,7 +82,7 @@ class CreditServiceImplTest {
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> creditService.updateCredit(updatedCredit, id),
-                "Should throw NotFoundCreditException when credit is not found");
+                "Should throw IllegalArgumentException when credit is not found");
     }
 
 

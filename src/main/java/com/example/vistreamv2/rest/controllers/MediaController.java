@@ -3,12 +3,15 @@ package com.example.vistreamv2.rest.controllers;
 import com.example.vistreamv2.dtos.requests.media.FilterMediaReq;
 import com.example.vistreamv2.dtos.response.media.ShortMediaResDto;
 import com.example.vistreamv2.mapper.MediaMapper;
+import com.example.vistreamv2.models.entity.AppUser;
 import com.example.vistreamv2.models.entity.Country;
 import com.example.vistreamv2.models.entity.Genre;
 import com.example.vistreamv2.models.entity.Media;
+import com.example.vistreamv2.repositories.MediaRepository;
 import com.example.vistreamv2.services.CountryService;
 import com.example.vistreamv2.services.GenreService;
 import com.example.vistreamv2.services.MediaService;
+import com.example.vistreamv2.services.UserService;
 import com.example.vistreamv2.utils.Response;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
@@ -32,7 +35,10 @@ public class MediaController {
     private final MediaService mediaService;
     private final GenreService genreService;
     private final CountryService countryService;
+    private final UserService userService;
     private final MediaMapper mediaMapper;
+
+    private final MediaRepository mediaRepository;
 
     @GetMapping
     public ResponseEntity<Response<Object>> getAllMedia(@RequestParam Optional<String> searchTerm,
@@ -135,6 +141,43 @@ public class MediaController {
                 .result(stringListMap)
                 .build());
     }
+
+//    @GetMapping("test")
+//    public ResponseEntity<?> watchList(){
+//        Page<Media> media = mediaRepository.findWatchlistByUserId(1L, Pageable.ofSize(1));
+//        return ResponseEntity.ok(media);
+//    }
+
+    @GetMapping("/watchlist")
+    public ResponseEntity<Response<Object>> watchList(@RequestParam Optional<Integer> numPage,
+                                                        @RequestParam Optional<Integer> numSize){
+        Map<String, Page<ShortMediaResDto>> stringListMap = new HashMap<>();
+        // initialize pageable default
+        Pageable pageable = PageRequest.of(
+                numPage.orElse(0),
+                numSize.orElse(10)
+        );
+        // initialize request default
+        Page<Media> mediaPage = mediaService.watchListPageable(userService.me().getId(), pageable);
+
+        // Mapped data
+        List<ShortMediaResDto> shortMediaResDtoList = mediaPage.stream()
+                .map(mediaMapper::mapToShortMediaResDto)
+                .toList();
+
+        // Insert data in PageImpl class
+        Page<ShortMediaResDto> movieResDtoPage = new PageImpl<>(shortMediaResDtoList, pageable, mediaPage.getTotalElements());
+        // Set data pageble
+        stringListMap.put("page", movieResDtoPage);
+        return ResponseEntity.ok(Response.builder()
+                .message("Success")
+                .result(stringListMap)
+                .build());
+    }
+
+
+
+
 
 //    @GetMapping("/filter")
 //    public ResponseEntity<Response<Object>> filterMedia(@Valid @RequestBody FilterMediaReq filterMediaReq,

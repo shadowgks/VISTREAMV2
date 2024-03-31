@@ -10,6 +10,7 @@ import java.util.Set;
 
 public interface MediaService {
     Page<Media> findAllMediaPageable(String typeMedia, String searchTerm, Pageable pageable);
+    Page<Media> watchListPageable(Long id, Pageable pageable);
     Media findMediaByShortLink(String shortLink);
 
     Set<Media> mediaAlsoLike(Set<Country> countries,

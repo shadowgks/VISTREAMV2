@@ -38,6 +38,13 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("SELECT DISTINCT m FROM Media m JOIN m.genres g JOIN m.countries c WHERE g.name = :genreOrCountry OR c.name = :genreOrCountry")
     Optional<Page<Media>> findAllByGenreOrCountry(String genreOrCountry, Pageable pageable);
     Optional<Media> findMediaByIdTmdb(Long idTmdb);
+
+    //WatchList
+    @Query("SELECT u FROM AppUser u JOIN u.watchlists m WHERE u.id = :userId AND m.id = :mediaId")
+    Optional<AppUser> findWatchlistByUserAndMedia(@Param("userId") Long userId, @Param("mediaId") Long mediaId);
+    @Query("SELECT m FROM AppUser u JOIN u.watchlists m WHERE u.id = :userId")
+    Optional<Page<Media>> findWatchlistByUserId(@Param("userId") Long userId, Pageable pageable);
+
 //    @Query("SELECT m FROM Media m " +
 //            "WHERE ((:typeMedia IS NULL OR LOWER(m.typeMedia) = LOWER(:typeMedia)) " +
 //            "OR (:typeMedia IS NULL AND m.typeMedia IS NULL)) " +

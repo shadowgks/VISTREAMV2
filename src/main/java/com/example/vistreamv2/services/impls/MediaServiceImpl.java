@@ -24,6 +24,12 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public Page<Media> watchListPageable(Long id, Pageable pageable) {
+        return mediaRepository.findWatchlistByUserId(id, pageable)
+                .orElseThrow(() -> new NotFoundMediaException("Not found any media"));
+    }
+
+    @Override
     public Media findMediaByShortLink(String shortLink) {
         return mediaRepository.findMediaByShortLink(shortLink)
                 .orElseThrow(() -> new NotFoundMediaException("Not this media: "+shortLink));

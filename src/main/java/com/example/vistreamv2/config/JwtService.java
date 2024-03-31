@@ -23,11 +23,6 @@ public class JwtService {
     private String SECRET_KEY;
 
 
-    public <T> T extractClaims(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
     public String generateAccessToken(UserDetails userDetails){
         return generateToken(new HashMap<>(), userDetails, EXPIRATION_ACCESS_TOKEN);
     }
@@ -57,6 +52,11 @@ public class JwtService {
 
     private Date extractExpiration(String token){
         return extractClaims(token, Claims::getExpiration);
+    }
+
+    public <T> T extractClaims(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
     public Claims extractAllClaims(String token){
