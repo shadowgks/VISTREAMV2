@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.*;
 
@@ -72,22 +74,30 @@ public class CreditController {
 //                .build(),
 //                HttpStatus.CREATED);
 //    }
-    @PostMapping
-    public ResponseEntity<Response<String>> saveCredit(@ModelAttribute CreditReqDto creditReqDto){
-        String imageUrl = s3Service.uploadFile(creditReqDto.getFile());
-        creditReqDto.setProfilePath(imageUrl);
-        creditService.saveCredit(creditMapper.mapToEntity(creditReqDto));
-        return new ResponseEntity<>(Response.<String>builder()
-                .message("Created Credit Successfully")
-                .build(),
-                HttpStatus.CREATED);
-    }
+@PostMapping
+public ResponseEntity<Response<String>> saveCredit(@Valid CreditReqDto creditReqDto, MultipartHttpServletRequest multipartRequest) {
+    MultipartFile file = multipartRequest.getFile("file"); // Retrieving the file from the request
+    // Perform validation on other fields as usual
+
+    // Perform file upload and other operations
+    String imageUrl = s3Service.uploadFile(file);
+    creditReqDto.setProfilePath(imageUrl);
+    creditService.saveCredit(creditMapper.mapToEntity(creditReqDto));
+
+    return new ResponseEntity<>(Response.<String>builder()
+            .message("Created Credit Successfully")
+            .build(),
+            HttpStatus.CREATED);
+}
 
     @PutMapping("/{id}")
     public ResponseEntity<Response<String>> updateCredit(@ModelAttribute CreditReqDto creditReqDto,
                                                                 @PathVariable("id") Long id){
-        String imageUrl = s3Service.uploadFile(creditReqDto.getFile());
-        creditReqDto.setProfilePath(imageUrl);
+        // Check if the file is empty or not provided
+        if (!creditReqDto.getFile().isEmpty()) {
+            String imageUrl = s3Service.uploadFile(creditReqDto.getFile());
+            creditReqDto.setProfilePath(imageUrl);
+        }
         creditService.updateCredit(creditMapper.mapToEntity(creditReqDto), id);
         return new ResponseEntity<>(Response.<String>builder()
                 .message("Updated Credit Successfully")

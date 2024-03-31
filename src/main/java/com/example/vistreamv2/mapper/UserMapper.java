@@ -3,6 +3,7 @@ package com.example.vistreamv2.mapper;
 
 import com.example.vistreamv2.dtos.requests.user.AuthenticateReqDto;
 import com.example.vistreamv2.dtos.requests.user.RegisterReqDto;
+import com.example.vistreamv2.dtos.response.media.DetailsMediaResDto;
 import com.example.vistreamv2.dtos.response.user.MeResourceResDTO;
 import com.example.vistreamv2.models.entity.AppUser;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,10 @@ public class UserMapper {
     }
 
     public MeResourceResDTO mapToDtoMeResource(AppUser appUser){
-        return  modelMapper.map(appUser, MeResourceResDTO.class);
+        MeResourceResDTO dto = modelMapper.map(appUser, MeResourceResDTO.class);
+        dto.getRoles().forEach(r -> r.getPermissions()
+                .forEach(p -> p.setSubjectAction(p.getSubject() +":"+ p.getAction())));
+        return dto;
     }
 
 //    public UserResDto mapToDto(AppUser user){

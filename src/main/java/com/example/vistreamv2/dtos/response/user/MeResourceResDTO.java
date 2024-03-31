@@ -13,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MeResourceResDTO {
+    Boolean isEnabled;
     String firstName;
     String lastName;
     String userNamee;

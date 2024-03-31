@@ -19,7 +19,6 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     show-sql: true
     hibernate:
@@ -33,3 +32,10 @@ spring:
     api:
       key: "6012a2495a4fe600579a02c19b35cf28"
       link-v3: "https://api.themoviedb.org/3"
+  jwt:
+    access:
+      expirationInMs: 86400000 # 24h
+    refresh:
+      expirationInMonths: 1
+    signing:
+      key: 7386885cc23117b408efad056e4f9e576d2f4262c4a2abd0e2de7ed3757a5281

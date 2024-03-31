@@ -24,12 +24,6 @@ public class CreditServiceImpl implements CreditService {
     }
 
     @Override
-    public void savedCredits(List<Credit> credits) {
-        credits.forEach(c -> checkCreditIdTmdb(c.getIdTmdb()));
-        creditRepository.saveAll(credits);
-    }
-
-    @Override
     public void saveCredit(Credit credit) {
         creditRepository.save(credit);
     }
@@ -38,13 +32,17 @@ public class CreditServiceImpl implements CreditService {
     public Credit updateCredit(Credit credit, Long id) {
         Credit findCredit = creditRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found this credit: "+ id));
+        if(credit.getProfilePath() == null){
+            findCredit.setProfilePath(findCredit.getProfilePath());
+        }else{
+            findCredit.setProfilePath(credit.getProfilePath());
+        }
         // Set all properties of findCredit
         findCredit.setIdTmdb(findCredit.getIdTmdb());
         findCredit.setAdult(credit.getAdult());
         findCredit.setGender(credit.getGender());
         findCredit.setName(credit.getName());
         findCredit.setPopularity(credit.getPopularity());
-        findCredit.setProfilePath(credit.getProfilePath());
         return creditRepository.save(findCredit);
     }
 

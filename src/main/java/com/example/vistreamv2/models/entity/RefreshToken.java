@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,8 +19,8 @@ public class RefreshToken {
     @Column(nullable = false, unique = true)
     private String token;
     @Column(nullable = false)
-    private Instant expiryDate;
-    public boolean revoked;
+    private LocalDateTime expiryDate;
+    public Boolean revoked;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

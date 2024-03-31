@@ -11,4 +11,5 @@ import lombok.*;
 public class PermissionResDto {
     private String subject;
     private ActionType action;
+    private String subjectAction;
 }

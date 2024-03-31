@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,11 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private final Long expirationAccessToken = 86400000L;
-    private final Long expirationRefreshToken = 60480000L;
-    private final String secretKey = "7386885cc23117b408efad056e4f9e576d2f4262c4a2abd0e2de7ed3757a5281";
+    @Value("${spring.jwt.access.expirationInMs}")
+    private Long EXPIRATION_ACCESS_TOKEN;
+    @Value("${spring.jwt.signing.key}")
+    private String SECRET_KEY;
 
-    public String extractUsername(String token) {
-        return extractClaims(token, Claims::getSubject);
-    }
 
     public <T> T extractClaims(String token, Function<Claims, T> claimsResolver){
         final Claims claims = extractAllClaims(token);
@@ -30,11 +29,7 @@ public class JwtService {
     }
 
     public String generateAccessToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails, expirationAccessToken);
-    }
-
-    public String generateRefreshToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails, expirationRefreshToken);
+        return generateToken(new HashMap<>(), userDetails, EXPIRATION_ACCESS_TOKEN);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, Long expiration){
@@ -45,6 +40,10 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public String extractUsername(String token) {
+        return extractClaims(token, Claims::getSubject);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails){
@@ -70,7 +69,7 @@ public class JwtService {
     }
 
     private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

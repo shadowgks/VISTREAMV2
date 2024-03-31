@@ -8,9 +8,11 @@ import com.example.vistreamv2.repositories.RefreshTokenRepository;
 import com.example.vistreamv2.repositories.UserRepository;
 import com.example.vistreamv2.services.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -20,15 +22,19 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtService jwtService;
-    private final Long expirationRefreshToken = 60480000L;
+
+    @Value("${spring.jwt.refresh.expirationInMonths}")
+    private Long EXPIRATION_REFRESH_TOKEN;
     @Override
     public RefreshToken createRefreshToken(Long idUser) {
-        AppUser user = userRepository.findById(idUser).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        AppUser user = userRepository.findById(idUser)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        LocalDateTime refreshTokenExpirationDateTime = LocalDateTime.now().plusMonths(EXPIRATION_REFRESH_TOKEN);
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes()))
                 .user(user)
                 .revoked(false)
-                .expiryDate(Instant.now().plusMillis(expirationRefreshToken))
+                .expiryDate(refreshTokenExpirationDateTime)
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }
@@ -38,7 +44,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         if(token == null){
             throw new TokenException("Token is null");
         }
-        if(token.getExpiryDate().isBefore(Instant.now())){
+        if(token.getExpiryDate().isBefore(LocalDateTime.now())){
             refreshTokenRepository.delete(token);
             throw new TokenException("Refresh token was expired. Please make a new authentication request");
         }

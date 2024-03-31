@@ -69,6 +69,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public AppUser me() {
+        return (AppUser) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+    }
+
+    @Override
     public void updateUser(AppUser user) {
     }
 
@@ -77,10 +84,5 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    public AppUser me() {
-        return (AppUser) SecurityContextHolder.getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-    }
+
 }
