@@ -71,7 +71,7 @@ git clone https://github.com/shadowgks/VISTREAMV2.git
 ```
 ```bash
 # Go to the backend directory
-cd AppGCM
+cd VISTREAMV2
 ```
 ```bash
 # install dependencies
